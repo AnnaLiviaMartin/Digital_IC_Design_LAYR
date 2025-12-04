@@ -8,7 +8,7 @@ package ascon_pkg;
     // TYPE DEFINITIONS
     //
 
-    // State array used in the ASCON algorithm
+    // State array used in the ASCON algorithm with 320 bit = 5 x 64 bit words
     typedef logic [63:0] t_state_array[0:4];
 
     // Array for round constants

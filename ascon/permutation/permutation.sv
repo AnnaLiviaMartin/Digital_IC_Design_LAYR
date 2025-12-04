@@ -18,7 +18,7 @@ module permutation
     input  t_state_array         i_state,                  //! Input state array
     input  logic         [  3:0] i_round,                  //! Input round number
     input  logic         [ 63:0] i_data,                   //! Input data
-    input  logic         [127:0] i_key,                    //! Input key
+    input  logic         [127:0] i_key,                    //! Input key -> 255? bits
     output t_state_array         o_state,                  //! Output state array
     output logic         [ 63:0] o_cipher,                 //! Output cipher
     output logic         [127:0] o_tag                     //! Output tag
@@ -122,10 +122,6 @@ module permutation
             o_tag_reg        <= 0;
         end
     end
-
-    //
-    // Output assignment
-    //
 
     assign o_state  = state_output_reg;
     assign o_cipher = o_cipher_reg;

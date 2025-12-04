@@ -1,6 +1,7 @@
 `include "config.sv"
 `timescale 1ns / 1ps
 
+// first round constant addition layer pc
 module addition_layer
     import ascon_pkg::t_state_array, ascon_pkg::C_LUT_ADDITION;
 (
@@ -8,6 +9,7 @@ module addition_layer
     input  t_state_array       i_state,
     output t_state_array       o_state
 );
+
 
     assign o_state[0] = i_state[0];
     assign o_state[1] = i_state[1];

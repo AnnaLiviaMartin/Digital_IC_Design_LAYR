@@ -1,6 +1,7 @@
 `include "config.sv"
 `timescale 1ns / 1ps
 
+// third round diffusion layer pl
 module diffusion_layer
     import ascon_pkg::t_state_array;
 (

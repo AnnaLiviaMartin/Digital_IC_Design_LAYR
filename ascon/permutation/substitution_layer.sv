@@ -1,6 +1,7 @@
 `include "config.sv"
 `timescale 1ns / 1ps
 
+// second round substitution layer ps
 module substitution_layer
     import ascon_pkg::t_state_array;
 #(
