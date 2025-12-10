@@ -101,7 +101,7 @@ module ascon_permutation #(
                 done <= 1;
                 state_out <= {x0, x1, x2, x3, x4};
             end
-        end
+        end 
     end
 
 endmodule
