@@ -1,5 +1,5 @@
 module Counter #(
-    parameter integer WIDTH = 40
+    parameter integer WIDTH = 29
 )(
     input logic         clk,
     input logic         reset,
@@ -17,9 +17,8 @@ module Counter #(
     end
 
     always_comb begin
-        gleds <= val [WIDTH-1: WIDTH-4];
+        gleds <= val [WIDTH-1 : WIDTH-4];
         rled <= reset;
     end
 
 endmodule
-
