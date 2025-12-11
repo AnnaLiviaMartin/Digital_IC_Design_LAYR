@@ -10,7 +10,6 @@ module addition_layer
     output t_state_array       o_state
 );
 
-
     assign o_state[0] = i_state[0];
     assign o_state[1] = i_state[1];
     assign o_state[2] = i_state[2] ^ {56'h00000000000000, C_LUT_ADDITION[i_round]};
