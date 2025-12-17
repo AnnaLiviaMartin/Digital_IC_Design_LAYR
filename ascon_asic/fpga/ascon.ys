@@ -1,0 +1,2 @@
+read_verilog -sv ascon.sv
+synth_ecp5 -json ascon.json
