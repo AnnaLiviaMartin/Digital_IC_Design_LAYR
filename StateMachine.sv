@@ -33,7 +33,7 @@ module ascon_hmac_top #(
     reg [63:0] outer_input;// Opad xor
 
     reg [127:0] concat_inner;
-    reg [319:0] concat_outer;
+    reg [127:0] concat_outer;
     
 
     // connection to ascon-hash
@@ -106,8 +106,8 @@ module ascon_hmac_top #(
 
             CONCAT_OUTER_INNER_ASCON: begin
                 // concat outer_input und inner_Ascon
-                concat_outer[319:255]    <= outer_input;
-                concat_outer[63:0]      <= ascon_hash_out;
+                concat_outer[127:64]    <= inner_input;
+                concat_outer[63:0]      <= msg_in;
                 hmac_state_next <= PRODUCE_OUTER_ASCON;
             end
 
