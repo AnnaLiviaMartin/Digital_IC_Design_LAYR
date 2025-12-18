@@ -19,6 +19,15 @@ Wir haben einen Counter für 5 LED's geschrieben. Diese Blinken (siehe Counter.s
 Es folgt eine Beschreibung der Umsetzung.
 ### Random Number Generator
 
+- Ausprobieren kreativer Ansätze für einen True Number Generator
+
+#### Idee für Pseudozufallszahlengenerator
+- Speicherchip, welcher jeweils die letzte generierte Zufallszahl speichert.
+- unsicher, da nicht im Chip integriert
+
+#### Stattdessen möglicher Pseudozufallszahlengenerator
+- einfacher Ring-Oszillator
+
 ### Zustandsautomat
 
 ### HMAC-Umsetzung mit allen Teilen zusammen
