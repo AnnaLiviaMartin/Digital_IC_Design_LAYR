@@ -7,5 +7,3 @@ set_io --warn-no-port gleds[1] 98
 set_io --warn-no-port gleds[2] 99
 set_io --warn-no-port gleds[3] 96
 
-set_io --warn-no-port reset 112
-
