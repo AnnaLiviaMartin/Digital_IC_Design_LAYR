@@ -8,3 +8,7 @@
 /KMAC/example_test/.pytest_cache/
 /KMAC/example_test/sim_build/
 
+/KMAC/pad10_1/__pycache__/
+/KMAC/pad10_1/.pytest_cache/
+/KMAC/pad10_1/sim_build/
+
