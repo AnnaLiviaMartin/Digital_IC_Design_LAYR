@@ -1,0 +1,9 @@
+/KMAC/__pycache__/
+/KMAC/.pytest_cache/
+/KMAC/sim_build/
+/KMAC/cocotb_sv_env/
+
+/KMAC/example_test/__pycache__/
+/KMAC/example_test/.pytest_cache/
+/KMAC/example_test/sim_build/
+
