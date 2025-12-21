@@ -1,5 +1,5 @@
 module pad10_1 #(
-    parameter int R_BITS = 8,
+    parameter int R_BITS = 11,
     parameter int M_BITS = 8,
     parameter int P_BITS = 256  // Ausgabebreite für 10^z (ca. 10^9999999 hat ~10M Stellen)
 )(
@@ -13,14 +13,12 @@ module pad10_1 #(
 );
 
     // Zustände für FSM
-    typedef enum logic [2:0] {
-        IDLE,
-        SEARCH_Z,
-        COMPUTE_POWER,
-        FINISH
-    } state_t;
-    
-    state_t state, state_next;
+    localparam logic [2:0] IDLE         = 3'd0;
+    localparam logic [2:0] SEARCH_Z     = 3'd1;  
+    localparam logic [2:0] COMPUTE_POWER = 3'd2;
+    localparam logic [2:0] FINISH       = 3'd3;
+
+    logic [2:0] state, state_next;
     
     // Zähler für z-Suche (24 Bit reichen für 16M)
     logic [23:0] z_cnt;
@@ -60,6 +58,7 @@ module pad10_1 #(
                 if (start) begin
                     state_next = SEARCH_Z;
                     z_cnt_next = 24'd0;
+                    P = {{P_BITS}{1'b0}}
                 end
             end
             
@@ -75,10 +74,7 @@ module pad10_1 #(
             end
             
             COMPUTE_POWER: begin
-                // Hier 10^z berechnen -> Vereinfacht als Power-Modul
-                // P = 10^z (padding mit Nullen links)
-                // Da 10^z riesig ist, typisch: P = "1" gefolgt von z Nullen
-                P = (1'b1 << z_cnt) | {{(P_BITS-z_cnt-1){1'b0}}, {z_cnt{1'b0}}};
+                P = (1'b1 << z_cnt) | 1'b1;
                 state_next = FINISH;
             end
             
