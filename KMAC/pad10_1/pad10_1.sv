@@ -1,7 +1,8 @@
+`timescale 1ns / 1ps
 module pad10_1 #(
     parameter int R_BITS = 11,
     parameter int M_BITS = 8,
-    parameter int P_BITS = 256  // Ausgabebreite für 10^z (ca. 10^9999999 hat ~10M Stellen)
+    parameter int P_BITS = 256
 )(
     input  logic             clk,
     input  logic             rst_n,
@@ -12,7 +13,7 @@ module pad10_1 #(
     output logic             done
 );
 
-    // Zustände für FSM
+    // Zustände für FSM (Yosys/iCE40-kompatibel)
     localparam logic [2:0] IDLE         = 3'd0;
     localparam logic [2:0] SEARCH_Z     = 3'd1;  
     localparam logic [2:0] COMPUTE_POWER = 3'd2;
@@ -22,18 +23,13 @@ module pad10_1 #(
     
     // Zähler für z-Suche (24 Bit reichen für 16M)
     logic [23:0] z_cnt;
-    logic [23:0] z_cnt_next;
     
     // Temporäre Register
-    logic [R_BITS-1:0] temp_sum;
-    logic [R_BITS:0]   mod_result;  // +1 Bit für Überlauf
-    
-    // Power-Berechnung (Square-and-Multiply für 10^z mod irgendwas?)
-    logic [P_BITS-1:0] base_reg, result_reg, square_reg;
-    logic              power_busy;
+    logic [R_BITS:0] temp_sum;  // +1 Bit Überlauf
+    logic [R_BITS:0] mod_result;
     
     // Zähler-Inkrement und Modulo-Check
-    assign temp_sum = z_cnt + m + 2;
+    assign temp_sum = z_cnt[23:R_BITS] + m + 2;  // Upper bits von z_cnt
     assign mod_result = temp_sum % r;
     
     // FSM: State Register
@@ -43,38 +39,34 @@ module pad10_1 #(
             z_cnt <= 24'd0;
         end else begin
             state <= state_next;
-            z_cnt <= z_cnt_next;
         end
     end
     
-    // FSM: Next State + Output Logic
     always_comb begin
         state_next = state;
-        z_cnt_next = z_cnt;
         done = 1'b0;
+        P = '0;
         
         unique case (state)
             IDLE: begin
                 if (start) begin
                     state_next = SEARCH_Z;
-                    z_cnt_next = 24'd0;
-                    P = {{P_BITS}{1'b0}}
                 end
             end
             
             SEARCH_Z: begin
-                if (mod_result == 0) begin  // (z + m + 2) mod r == 0 gefunden!
+                
+                if ((z_cnt[R_BITS-1:0] + m + 2) % r == 0) begin  // ALTES z_cnt checken!
                     state_next = COMPUTE_POWER;
-                end else begin
-                    z_cnt_next = z_cnt + 1;
-                    if (z_cnt == 24'd9999999) begin
-                        state_next = FINISH;  // Timeout
-                    end
+                end else if (z_cnt == 24'd9999999) begin
+                    state_next = FINISH;
                 end
+                z_cnt = z_cnt + 1;  // IMMER inkrementieren!
             end
             
             COMPUTE_POWER: begin
-                P = (1'b1 << z_cnt) | 1'b1;
+                //P = (1'b1 << z_cnt[7:0]) | 1'b1;  // 1 z*0 1 (8-bit z_cnt)
+                P = (1'b1 << (z_cnt[7:0] + 2)) | 1'b1;
                 state_next = FINISH;
             end
             
@@ -83,10 +75,10 @@ module pad10_1 #(
                 state_next = IDLE;
             end
             
-            default: state_next = IDLE;
+            default: begin
+                state_next = IDLE;
+            end
         endcase
     end
 
 endmodule
-
-

@@ -1,12 +1,12 @@
 module kmac_top_cshake #(
     parameter int RATE_BITS = 1088,  // cSHAKE128: r=1088
-    parameter int KEY_BITS   = 128,
+    parameter int CAPACITY   = 128,
     parameter int STR_LEN    = 15     // "KMACKMAC" customization
 )(
     input  logic                  clk,
     input  logic                  rst_n,
     input  logic                  start,
-    input  logic [KEY_BITS-1:0]   key,           // KMAC Key
+    input  logic [CAPACITY-1:0]   key,           // KMAC Key
     input  logic [RATE_BITS-1:0]  msg_block,     // Message Block
     input  logic [15:0]           msg_bit_len,   // Message bit length
     output logic [255:0]          mac_out,       // 256-bit KMAC output
@@ -73,7 +73,7 @@ module kmac_top_cshake #(
     // **1. key_bytepad**
     kmac_bytepad #(128) key_pad (
         .clk(clk), .rst_n(rst_n), .start(state == KEY_BYTEPAD),
-        .L(key_bits/8), .X_bytes(key_bytes),
+        .L(CAPACITY/8), .X_bytes(key_bytes),
         .pad_bytes(key_padded), .pad_done()
     );
     
