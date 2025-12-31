@@ -1,0 +1,8 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1767199348" />
+    <testcase name="test_kmac_right_pad_basic" classname="test_right_encode" file="/Users/davidrossel/Documents/Uni/Chipdesign/Chipdesign-code/Digital_IC_Design_LAYR/KMAC/right_encode/test_right_encode.py" lineno="30" time="0.0008590221405029297" sim_time_ns="2.0" ratio_time="2328.2286983069666" />
+    <testcase name="test_kmac_right_pad_vectors" classname="test_right_encode" file="/Users/davidrossel/Documents/Uni/Chipdesign/Chipdesign-code/Digital_IC_Design_LAYR/KMAC/right_encode/test_right_encode.py" lineno="57" time="0.0009410381317138672" sim_time_ns="17.0" ratio_time="18065.155307828732" />
+    <testcase name="test_kmac_right_pad_edge_cases" classname="test_right_encode" file="/Users/davidrossel/Documents/Uni/Chipdesign/Chipdesign-code/Digital_IC_Design_LAYR/KMAC/right_encode/test_right_encode.py" lineno="100" time="0.0002570152282714844" sim_time_ns="3.0" ratio_time="11672.460111317254" />
+  </testsuite>
+</testsuites>

@@ -1,3 +1,4 @@
+`timescale 1ns/1ps
 module bytepad #(
     parameter int W = 8  // Blockgröße in Bytes (typisch 8, 136 für SHAKE)
 )(

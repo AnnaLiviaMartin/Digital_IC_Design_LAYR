@@ -1,0 +1,561 @@
+#! /opt/homebrew/Cellar/icarus-verilog/12.0/bin/vvp
+:ivl_version "12.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 12;
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/system.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/vhdl_sys.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/vhdl_textio.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/v2005_math.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/va_math.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/v2009.vpi";
+S_0x1051fac20 .scope package, "$unit" "$unit" 2 1;
+ .timescale 0 0;
+S_0x1051fada0 .scope module, "kmac_encode_string" "kmac_encode_string" 3 2;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 1 "clk";
+    .port_info 1 /INPUT 1 "rst_n";
+    .port_info 2 /INPUT 1 "start";
+    .port_info 3 /INPUT 256 "str_bytes";
+    .port_info 4 /INPUT 6 "str_len";
+    .port_info 5 /OUTPUT 256 "enc_bytes";
+    .port_info 6 /OUTPUT 1 "enc_done";
+P_0xc10c48240 .param/l "MAX_LEN" 0 3 3, +C4<00000000000000000000000000100000>;
+enum0x105200890 .enum4 (2)
+   "IDLE" 2'b00,
+   "ENCODE" 2'b01,
+   "DONE_STATE" 2'b10
+ ;
+o0xc11431810 .functor BUFZ 1, C4<z>; HiZ drive
+v0xc10c4f520_0 .net "clk", 0 0, o0xc11431810;  0 drivers
+v0xc10c4f5c0 .array "enc_bytes", 31 0;
+v0xc10c4f5c0_0 .net v0xc10c4f5c0 0, 7 0, L_0x1051ffcd0; 1 drivers
+v0xc10c4f5c0_1 .net v0xc10c4f5c0 1, 7 0, L_0x10520a170; 1 drivers
+v0xc10c4f5c0_2 .net v0xc10c4f5c0 2, 7 0, L_0x1051faf20; 1 drivers
+v0xc10c4f5c0_3 .net v0xc10c4f5c0 3, 7 0, L_0x105209810; 1 drivers
+v0xc10c4f5c0_4 .net v0xc10c4f5c0 4, 7 0, L_0x105209880; 1 drivers
+v0xc10c4f5c0_5 .net v0xc10c4f5c0 5, 7 0, L_0x1052096a0; 1 drivers
+v0xc10c4f5c0_6 .net v0xc10c4f5c0 6, 7 0, L_0x105209710; 1 drivers
+v0xc10c4f5c0_7 .net v0xc10c4f5c0 7, 7 0, L_0x1052094c0; 1 drivers
+v0xc10c4f5c0_8 .net v0xc10c4f5c0 8, 7 0, L_0x105209530; 1 drivers
+v0xc10c4f5c0_9 .net v0xc10c4f5c0 9, 7 0, L_0x105209350; 1 drivers
+v0xc10c4f5c0_10 .net v0xc10c4f5c0 10, 7 0, L_0x1052093c0; 1 drivers
+v0xc10c4f5c0_11 .net v0xc10c4f5c0 11, 7 0, L_0x1052091e0; 1 drivers
+v0xc10c4f5c0_12 .net v0xc10c4f5c0 12, 7 0, L_0x105209250; 1 drivers
+v0xc10c4f5c0_13 .net v0xc10c4f5c0 13, 7 0, L_0x105209000; 1 drivers
+v0xc10c4f5c0_14 .net v0xc10c4f5c0 14, 7 0, L_0x105209070; 1 drivers
+v0xc10c4f5c0_15 .net v0xc10c4f5c0 15, 7 0, L_0xc10c64000; 1 drivers
+v0xc10c4f5c0_16 .net v0xc10c4f5c0 16, 7 0, L_0xc10c64070; 1 drivers
+v0xc10c4f5c0_17 .net v0xc10c4f5c0 17, 7 0, L_0xc10c640e0; 1 drivers
+v0xc10c4f5c0_18 .net v0xc10c4f5c0 18, 7 0, L_0xc10c64150; 1 drivers
+v0xc10c4f5c0_19 .net v0xc10c4f5c0 19, 7 0, L_0xc10c641c0; 1 drivers
+v0xc10c4f5c0_20 .net v0xc10c4f5c0 20, 7 0, L_0xc10c64230; 1 drivers
+v0xc10c4f5c0_21 .net v0xc10c4f5c0 21, 7 0, L_0xc10c642a0; 1 drivers
+v0xc10c4f5c0_22 .net v0xc10c4f5c0 22, 7 0, L_0xc10c64310; 1 drivers
+v0xc10c4f5c0_23 .net v0xc10c4f5c0 23, 7 0, L_0xc10c64380; 1 drivers
+v0xc10c4f5c0_24 .net v0xc10c4f5c0 24, 7 0, L_0xc10c643f0; 1 drivers
+v0xc10c4f5c0_25 .net v0xc10c4f5c0 25, 7 0, L_0xc10c64460; 1 drivers
+v0xc10c4f5c0_26 .net v0xc10c4f5c0 26, 7 0, L_0xc10c644d0; 1 drivers
+v0xc10c4f5c0_27 .net v0xc10c4f5c0 27, 7 0, L_0xc10c64540; 1 drivers
+v0xc10c4f5c0_28 .net v0xc10c4f5c0 28, 7 0, L_0xc10c645b0; 1 drivers
+v0xc10c4f5c0_29 .net v0xc10c4f5c0 29, 7 0, L_0xc10c64620; 1 drivers
+v0xc10c4f5c0_30 .net v0xc10c4f5c0 30, 7 0, L_0xc10c64690; 1 drivers
+v0xc10c4f5c0_31 .net v0xc10c4f5c0 31, 7 0, L_0xc10c64700; 1 drivers
+v0xc10c4f660_0 .var "enc_done", 0 0;
+o0xc11431870 .functor BUFZ 1, C4<z>; HiZ drive
+v0xc10c4f700_0 .net "rst_n", 0 0, o0xc11431870;  0 drivers
+o0xc114318a0 .functor BUFZ 1, C4<z>; HiZ drive
+v0xc10c4f7a0_0 .net "start", 0 0, o0xc114318a0;  0 drivers
+v0xc10c4f840_0 .var "state", 1 0;
+v0xc10c4f8e0_0 .var "state_next", 1 0;
+o0xc11431930 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980 .array "str_bytes", 31 0;
+v0xc10c4f980_0 .net v0xc10c4f980 0, 7 0, o0xc11431930; 0 drivers
+o0xc11431960 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_1 .net v0xc10c4f980 1, 7 0, o0xc11431960; 0 drivers
+o0xc11431990 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_2 .net v0xc10c4f980 2, 7 0, o0xc11431990; 0 drivers
+o0xc114319c0 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_3 .net v0xc10c4f980 3, 7 0, o0xc114319c0; 0 drivers
+o0xc114319f0 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_4 .net v0xc10c4f980 4, 7 0, o0xc114319f0; 0 drivers
+o0xc11431a20 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_5 .net v0xc10c4f980 5, 7 0, o0xc11431a20; 0 drivers
+o0xc11431a50 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_6 .net v0xc10c4f980 6, 7 0, o0xc11431a50; 0 drivers
+o0xc11431a80 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_7 .net v0xc10c4f980 7, 7 0, o0xc11431a80; 0 drivers
+o0xc11431ab0 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_8 .net v0xc10c4f980 8, 7 0, o0xc11431ab0; 0 drivers
+o0xc11431ae0 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_9 .net v0xc10c4f980 9, 7 0, o0xc11431ae0; 0 drivers
+o0xc11431b10 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_10 .net v0xc10c4f980 10, 7 0, o0xc11431b10; 0 drivers
+o0xc11431b40 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_11 .net v0xc10c4f980 11, 7 0, o0xc11431b40; 0 drivers
+o0xc11431b70 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_12 .net v0xc10c4f980 12, 7 0, o0xc11431b70; 0 drivers
+o0xc11431ba0 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_13 .net v0xc10c4f980 13, 7 0, o0xc11431ba0; 0 drivers
+o0xc11431bd0 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_14 .net v0xc10c4f980 14, 7 0, o0xc11431bd0; 0 drivers
+o0xc11431c00 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_15 .net v0xc10c4f980 15, 7 0, o0xc11431c00; 0 drivers
+o0xc11431c30 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_16 .net v0xc10c4f980 16, 7 0, o0xc11431c30; 0 drivers
+o0xc11431c60 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_17 .net v0xc10c4f980 17, 7 0, o0xc11431c60; 0 drivers
+o0xc11431c90 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_18 .net v0xc10c4f980 18, 7 0, o0xc11431c90; 0 drivers
+o0xc11431cc0 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_19 .net v0xc10c4f980 19, 7 0, o0xc11431cc0; 0 drivers
+o0xc11431cf0 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_20 .net v0xc10c4f980 20, 7 0, o0xc11431cf0; 0 drivers
+o0xc11431d20 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_21 .net v0xc10c4f980 21, 7 0, o0xc11431d20; 0 drivers
+o0xc11431d50 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_22 .net v0xc10c4f980 22, 7 0, o0xc11431d50; 0 drivers
+o0xc11431d80 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_23 .net v0xc10c4f980 23, 7 0, o0xc11431d80; 0 drivers
+o0xc11431db0 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_24 .net v0xc10c4f980 24, 7 0, o0xc11431db0; 0 drivers
+o0xc11431de0 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_25 .net v0xc10c4f980 25, 7 0, o0xc11431de0; 0 drivers
+o0xc11431e10 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_26 .net v0xc10c4f980 26, 7 0, o0xc11431e10; 0 drivers
+o0xc11431e40 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_27 .net v0xc10c4f980 27, 7 0, o0xc11431e40; 0 drivers
+o0xc11431e70 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_28 .net v0xc10c4f980 28, 7 0, o0xc11431e70; 0 drivers
+o0xc11431ea0 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_29 .net v0xc10c4f980 29, 7 0, o0xc11431ea0; 0 drivers
+o0xc11431ed0 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_30 .net v0xc10c4f980 30, 7 0, o0xc11431ed0; 0 drivers
+o0xc11431f00 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v0xc10c4f980_31 .net v0xc10c4f980 31, 7 0, o0xc11431f00; 0 drivers
+o0xc11431f30 .functor BUFZ 6, C4<zzzzzz>; HiZ drive
+v0xc10c4fa20_0 .net "str_len", 5 0, o0xc11431f30;  0 drivers
+E_0xc110393c0 .event anyedge, v0xc10c4f840_0, v0xc10c4f7a0_0;
+E_0xc11039400/0 .event negedge, v0xc10c4f700_0;
+E_0xc11039400/1 .event posedge, v0xc10c4f520_0;
+E_0xc11039400 .event/or E_0xc11039400/0, E_0xc11039400/1;
+S_0x1051ff9d0 .scope generate, "enc8_array[0]" "enc8_array[0]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48280 .param/l "i" 1 3 17, +C4<00>;
+S_0x1051ffb50 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0x1051ff9d0;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464010 .functor BUFT 1, C4<00000000>, C4<0>, C4<0>, C4<0>;
+L_0x1051ffcd0 .functor BUFZ 8, L_0xc11464010, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4cd20_0 .net "enc8_out", 7 0, L_0x1051ffcd0;  alias, 1 drivers
+v0xc10c4cdc0_0 .net "x", 7 0, L_0xc11464010;  1 drivers
+S_0x10520ac20 .scope generate, "enc8_array[1]" "enc8_array[1]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c482c0 .param/l "i" 1 3 17, +C4<01>;
+S_0x10520ada0 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0x10520ac20;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464058 .functor BUFT 1, C4<00000001>, C4<0>, C4<0>, C4<0>;
+L_0x10520a170 .functor BUFZ 8, L_0xc11464058, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4ce60_0 .net "enc8_out", 7 0, L_0x10520a170;  alias, 1 drivers
+v0xc10c4cf00_0 .net "x", 7 0, L_0xc11464058;  1 drivers
+S_0x10520af20 .scope generate, "enc8_array[2]" "enc8_array[2]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48300 .param/l "i" 1 3 17, +C4<010>;
+S_0x10520b0a0 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0x10520af20;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc114640a0 .functor BUFT 1, C4<00000010>, C4<0>, C4<0>, C4<0>;
+L_0x1051faf20 .functor BUFZ 8, L_0xc114640a0, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4cfa0_0 .net "enc8_out", 7 0, L_0x1051faf20;  alias, 1 drivers
+v0xc10c4d040_0 .net "x", 7 0, L_0xc114640a0;  1 drivers
+S_0x10520b220 .scope generate, "enc8_array[3]" "enc8_array[3]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48340 .param/l "i" 1 3 17, +C4<011>;
+S_0xc10c50000 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0x10520b220;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc114640e8 .functor BUFT 1, C4<00000011>, C4<0>, C4<0>, C4<0>;
+L_0x105209810 .functor BUFZ 8, L_0xc114640e8, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4d0e0_0 .net "enc8_out", 7 0, L_0x105209810;  alias, 1 drivers
+v0xc10c4d180_0 .net "x", 7 0, L_0xc114640e8;  1 drivers
+S_0xc10c50180 .scope generate, "enc8_array[4]" "enc8_array[4]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48380 .param/l "i" 1 3 17, +C4<0100>;
+S_0xc10c50300 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c50180;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464130 .functor BUFT 1, C4<00000100>, C4<0>, C4<0>, C4<0>;
+L_0x105209880 .functor BUFZ 8, L_0xc11464130, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4d220_0 .net "enc8_out", 7 0, L_0x105209880;  alias, 1 drivers
+v0xc10c4d2c0_0 .net "x", 7 0, L_0xc11464130;  1 drivers
+S_0xc10c50480 .scope generate, "enc8_array[5]" "enc8_array[5]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c483c0 .param/l "i" 1 3 17, +C4<0101>;
+S_0xc10c50600 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c50480;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464178 .functor BUFT 1, C4<00000101>, C4<0>, C4<0>, C4<0>;
+L_0x1052096a0 .functor BUFZ 8, L_0xc11464178, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4d360_0 .net "enc8_out", 7 0, L_0x1052096a0;  alias, 1 drivers
+v0xc10c4d400_0 .net "x", 7 0, L_0xc11464178;  1 drivers
+S_0xc10c50780 .scope generate, "enc8_array[6]" "enc8_array[6]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48400 .param/l "i" 1 3 17, +C4<0110>;
+S_0xc10c50900 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c50780;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc114641c0 .functor BUFT 1, C4<00000110>, C4<0>, C4<0>, C4<0>;
+L_0x105209710 .functor BUFZ 8, L_0xc114641c0, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4d4a0_0 .net "enc8_out", 7 0, L_0x105209710;  alias, 1 drivers
+v0xc10c4d540_0 .net "x", 7 0, L_0xc114641c0;  1 drivers
+S_0xc10c50a80 .scope generate, "enc8_array[7]" "enc8_array[7]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48440 .param/l "i" 1 3 17, +C4<0111>;
+S_0xc10c50c00 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c50a80;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464208 .functor BUFT 1, C4<00000111>, C4<0>, C4<0>, C4<0>;
+L_0x1052094c0 .functor BUFZ 8, L_0xc11464208, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4d5e0_0 .net "enc8_out", 7 0, L_0x1052094c0;  alias, 1 drivers
+v0xc10c4d680_0 .net "x", 7 0, L_0xc11464208;  1 drivers
+S_0xc10c50d80 .scope generate, "enc8_array[8]" "enc8_array[8]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48480 .param/l "i" 1 3 17, +C4<01000>;
+S_0xc10c50f00 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c50d80;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464250 .functor BUFT 1, C4<00001000>, C4<0>, C4<0>, C4<0>;
+L_0x105209530 .functor BUFZ 8, L_0xc11464250, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4d720_0 .net "enc8_out", 7 0, L_0x105209530;  alias, 1 drivers
+v0xc10c4d7c0_0 .net "x", 7 0, L_0xc11464250;  1 drivers
+S_0xc10c51080 .scope generate, "enc8_array[9]" "enc8_array[9]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c484c0 .param/l "i" 1 3 17, +C4<01001>;
+S_0xc10c51200 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c51080;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464298 .functor BUFT 1, C4<00001001>, C4<0>, C4<0>, C4<0>;
+L_0x105209350 .functor BUFZ 8, L_0xc11464298, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4d860_0 .net "enc8_out", 7 0, L_0x105209350;  alias, 1 drivers
+v0xc10c4d900_0 .net "x", 7 0, L_0xc11464298;  1 drivers
+S_0xc10c51380 .scope generate, "enc8_array[10]" "enc8_array[10]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48500 .param/l "i" 1 3 17, +C4<01010>;
+S_0xc10c51500 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c51380;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc114642e0 .functor BUFT 1, C4<00001010>, C4<0>, C4<0>, C4<0>;
+L_0x1052093c0 .functor BUFZ 8, L_0xc114642e0, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4d9a0_0 .net "enc8_out", 7 0, L_0x1052093c0;  alias, 1 drivers
+v0xc10c4da40_0 .net "x", 7 0, L_0xc114642e0;  1 drivers
+S_0xc10c51680 .scope generate, "enc8_array[11]" "enc8_array[11]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48540 .param/l "i" 1 3 17, +C4<01011>;
+S_0xc10c51800 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c51680;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464328 .functor BUFT 1, C4<00001011>, C4<0>, C4<0>, C4<0>;
+L_0x1052091e0 .functor BUFZ 8, L_0xc11464328, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4dae0_0 .net "enc8_out", 7 0, L_0x1052091e0;  alias, 1 drivers
+v0xc10c4db80_0 .net "x", 7 0, L_0xc11464328;  1 drivers
+S_0xc10c51980 .scope generate, "enc8_array[12]" "enc8_array[12]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48580 .param/l "i" 1 3 17, +C4<01100>;
+S_0xc10c51b00 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c51980;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464370 .functor BUFT 1, C4<00001100>, C4<0>, C4<0>, C4<0>;
+L_0x105209250 .functor BUFZ 8, L_0xc11464370, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4dc20_0 .net "enc8_out", 7 0, L_0x105209250;  alias, 1 drivers
+v0xc10c4dcc0_0 .net "x", 7 0, L_0xc11464370;  1 drivers
+S_0xc10c51c80 .scope generate, "enc8_array[13]" "enc8_array[13]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c485c0 .param/l "i" 1 3 17, +C4<01101>;
+S_0xc10c51e00 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c51c80;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc114643b8 .functor BUFT 1, C4<00001101>, C4<0>, C4<0>, C4<0>;
+L_0x105209000 .functor BUFZ 8, L_0xc114643b8, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4dd60_0 .net "enc8_out", 7 0, L_0x105209000;  alias, 1 drivers
+v0xc10c4de00_0 .net "x", 7 0, L_0xc114643b8;  1 drivers
+S_0xc10c51f80 .scope generate, "enc8_array[14]" "enc8_array[14]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48600 .param/l "i" 1 3 17, +C4<01110>;
+S_0xc10c52100 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c51f80;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464400 .functor BUFT 1, C4<00001110>, C4<0>, C4<0>, C4<0>;
+L_0x105209070 .functor BUFZ 8, L_0xc11464400, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4dea0_0 .net "enc8_out", 7 0, L_0x105209070;  alias, 1 drivers
+v0xc10c4df40_0 .net "x", 7 0, L_0xc11464400;  1 drivers
+S_0xc10c52280 .scope generate, "enc8_array[15]" "enc8_array[15]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48640 .param/l "i" 1 3 17, +C4<01111>;
+S_0xc10c52400 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c52280;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464448 .functor BUFT 1, C4<00001111>, C4<0>, C4<0>, C4<0>;
+L_0xc10c64000 .functor BUFZ 8, L_0xc11464448, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4dfe0_0 .net "enc8_out", 7 0, L_0xc10c64000;  alias, 1 drivers
+v0xc10c4e080_0 .net "x", 7 0, L_0xc11464448;  1 drivers
+S_0xc10c52580 .scope generate, "enc8_array[16]" "enc8_array[16]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48680 .param/l "i" 1 3 17, +C4<010000>;
+S_0xc10c52700 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c52580;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464490 .functor BUFT 1, C4<00010000>, C4<0>, C4<0>, C4<0>;
+L_0xc10c64070 .functor BUFZ 8, L_0xc11464490, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4e120_0 .net "enc8_out", 7 0, L_0xc10c64070;  alias, 1 drivers
+v0xc10c4e1c0_0 .net "x", 7 0, L_0xc11464490;  1 drivers
+S_0xc10c52880 .scope generate, "enc8_array[17]" "enc8_array[17]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c486c0 .param/l "i" 1 3 17, +C4<010001>;
+S_0xc10c52a00 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c52880;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc114644d8 .functor BUFT 1, C4<00010001>, C4<0>, C4<0>, C4<0>;
+L_0xc10c640e0 .functor BUFZ 8, L_0xc114644d8, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4e260_0 .net "enc8_out", 7 0, L_0xc10c640e0;  alias, 1 drivers
+v0xc10c4e300_0 .net "x", 7 0, L_0xc114644d8;  1 drivers
+S_0xc10c52b80 .scope generate, "enc8_array[18]" "enc8_array[18]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48700 .param/l "i" 1 3 17, +C4<010010>;
+S_0xc10c52d00 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c52b80;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464520 .functor BUFT 1, C4<00010010>, C4<0>, C4<0>, C4<0>;
+L_0xc10c64150 .functor BUFZ 8, L_0xc11464520, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4e3a0_0 .net "enc8_out", 7 0, L_0xc10c64150;  alias, 1 drivers
+v0xc10c4e440_0 .net "x", 7 0, L_0xc11464520;  1 drivers
+S_0xc10c52e80 .scope generate, "enc8_array[19]" "enc8_array[19]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48740 .param/l "i" 1 3 17, +C4<010011>;
+S_0xc10c53000 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c52e80;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464568 .functor BUFT 1, C4<00010011>, C4<0>, C4<0>, C4<0>;
+L_0xc10c641c0 .functor BUFZ 8, L_0xc11464568, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4e4e0_0 .net "enc8_out", 7 0, L_0xc10c641c0;  alias, 1 drivers
+v0xc10c4e580_0 .net "x", 7 0, L_0xc11464568;  1 drivers
+S_0xc10c53180 .scope generate, "enc8_array[20]" "enc8_array[20]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48780 .param/l "i" 1 3 17, +C4<010100>;
+S_0xc10c53300 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c53180;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc114645b0 .functor BUFT 1, C4<00010100>, C4<0>, C4<0>, C4<0>;
+L_0xc10c64230 .functor BUFZ 8, L_0xc114645b0, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4e620_0 .net "enc8_out", 7 0, L_0xc10c64230;  alias, 1 drivers
+v0xc10c4e6c0_0 .net "x", 7 0, L_0xc114645b0;  1 drivers
+S_0xc10c53480 .scope generate, "enc8_array[21]" "enc8_array[21]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c487c0 .param/l "i" 1 3 17, +C4<010101>;
+S_0xc10c53600 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c53480;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc114645f8 .functor BUFT 1, C4<00010101>, C4<0>, C4<0>, C4<0>;
+L_0xc10c642a0 .functor BUFZ 8, L_0xc114645f8, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4e760_0 .net "enc8_out", 7 0, L_0xc10c642a0;  alias, 1 drivers
+v0xc10c4e800_0 .net "x", 7 0, L_0xc114645f8;  1 drivers
+S_0xc10c53780 .scope generate, "enc8_array[22]" "enc8_array[22]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48800 .param/l "i" 1 3 17, +C4<010110>;
+S_0xc10c53900 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c53780;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464640 .functor BUFT 1, C4<00010110>, C4<0>, C4<0>, C4<0>;
+L_0xc10c64310 .functor BUFZ 8, L_0xc11464640, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4e8a0_0 .net "enc8_out", 7 0, L_0xc10c64310;  alias, 1 drivers
+v0xc10c4e940_0 .net "x", 7 0, L_0xc11464640;  1 drivers
+S_0xc10c53a80 .scope generate, "enc8_array[23]" "enc8_array[23]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48840 .param/l "i" 1 3 17, +C4<010111>;
+S_0xc10c53c00 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c53a80;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464688 .functor BUFT 1, C4<00010111>, C4<0>, C4<0>, C4<0>;
+L_0xc10c64380 .functor BUFZ 8, L_0xc11464688, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4e9e0_0 .net "enc8_out", 7 0, L_0xc10c64380;  alias, 1 drivers
+v0xc10c4ea80_0 .net "x", 7 0, L_0xc11464688;  1 drivers
+S_0xc10c53d80 .scope generate, "enc8_array[24]" "enc8_array[24]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48880 .param/l "i" 1 3 17, +C4<011000>;
+S_0xc10c58000 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c53d80;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc114646d0 .functor BUFT 1, C4<00011000>, C4<0>, C4<0>, C4<0>;
+L_0xc10c643f0 .functor BUFZ 8, L_0xc114646d0, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4eb20_0 .net "enc8_out", 7 0, L_0xc10c643f0;  alias, 1 drivers
+v0xc10c4ebc0_0 .net "x", 7 0, L_0xc114646d0;  1 drivers
+S_0xc10c58180 .scope generate, "enc8_array[25]" "enc8_array[25]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c488c0 .param/l "i" 1 3 17, +C4<011001>;
+S_0xc10c58300 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c58180;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464718 .functor BUFT 1, C4<00011001>, C4<0>, C4<0>, C4<0>;
+L_0xc10c64460 .functor BUFZ 8, L_0xc11464718, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4ec60_0 .net "enc8_out", 7 0, L_0xc10c64460;  alias, 1 drivers
+v0xc10c4ed00_0 .net "x", 7 0, L_0xc11464718;  1 drivers
+S_0xc10c58480 .scope generate, "enc8_array[26]" "enc8_array[26]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48900 .param/l "i" 1 3 17, +C4<011010>;
+S_0xc10c58600 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c58480;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464760 .functor BUFT 1, C4<00011010>, C4<0>, C4<0>, C4<0>;
+L_0xc10c644d0 .functor BUFZ 8, L_0xc11464760, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4eda0_0 .net "enc8_out", 7 0, L_0xc10c644d0;  alias, 1 drivers
+v0xc10c4ee40_0 .net "x", 7 0, L_0xc11464760;  1 drivers
+S_0xc10c58780 .scope generate, "enc8_array[27]" "enc8_array[27]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48940 .param/l "i" 1 3 17, +C4<011011>;
+S_0xc10c58900 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c58780;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc114647a8 .functor BUFT 1, C4<00011011>, C4<0>, C4<0>, C4<0>;
+L_0xc10c64540 .functor BUFZ 8, L_0xc114647a8, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4eee0_0 .net "enc8_out", 7 0, L_0xc10c64540;  alias, 1 drivers
+v0xc10c4ef80_0 .net "x", 7 0, L_0xc114647a8;  1 drivers
+S_0xc10c58a80 .scope generate, "enc8_array[28]" "enc8_array[28]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48980 .param/l "i" 1 3 17, +C4<011100>;
+S_0xc10c58c00 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c58a80;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc114647f0 .functor BUFT 1, C4<00011100>, C4<0>, C4<0>, C4<0>;
+L_0xc10c645b0 .functor BUFZ 8, L_0xc114647f0, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4f020_0 .net "enc8_out", 7 0, L_0xc10c645b0;  alias, 1 drivers
+v0xc10c4f0c0_0 .net "x", 7 0, L_0xc114647f0;  1 drivers
+S_0xc10c58d80 .scope generate, "enc8_array[29]" "enc8_array[29]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c489c0 .param/l "i" 1 3 17, +C4<011101>;
+S_0xc10c58f00 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c58d80;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464838 .functor BUFT 1, C4<00011101>, C4<0>, C4<0>, C4<0>;
+L_0xc10c64620 .functor BUFZ 8, L_0xc11464838, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4f160_0 .net "enc8_out", 7 0, L_0xc10c64620;  alias, 1 drivers
+v0xc10c4f200_0 .net "x", 7 0, L_0xc11464838;  1 drivers
+S_0xc10c59080 .scope generate, "enc8_array[30]" "enc8_array[30]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48a00 .param/l "i" 1 3 17, +C4<011110>;
+S_0xc10c59200 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c59080;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc11464880 .functor BUFT 1, C4<00011110>, C4<0>, C4<0>, C4<0>;
+L_0xc10c64690 .functor BUFZ 8, L_0xc11464880, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4f2a0_0 .net "enc8_out", 7 0, L_0xc10c64690;  alias, 1 drivers
+v0xc10c4f340_0 .net "x", 7 0, L_0xc11464880;  1 drivers
+S_0xc10c59380 .scope generate, "enc8_array[31]" "enc8_array[31]" 3 17, 3 17 0, S_0x1051fada0;
+ .timescale -9 -12;
+P_0xc10c48a40 .param/l "i" 1 3 17, +C4<011111>;
+S_0xc10c59500 .scope module, "enc" "enc8_kmac" 3 18, 4 2 0, S_0xc10c59380;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+L_0xc114648c8 .functor BUFT 1, C4<00011111>, C4<0>, C4<0>, C4<0>;
+L_0xc10c64700 .functor BUFZ 8, L_0xc114648c8, C4<00000000>, C4<00000000>, C4<00000000>;
+v0xc10c4f3e0_0 .net "enc8_out", 7 0, L_0xc10c64700;  alias, 1 drivers
+v0xc10c4f480_0 .net "x", 7 0, L_0xc114648c8;  1 drivers
+    .scope S_0x1051fada0;
+T_0 ;
+    %wait E_0xc11039400;
+    %load/vec4 v0xc10c4f700_0;
+    %nor/r;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.0, 8;
+    %pushi/vec4 0, 0, 2;
+    %assign/vec4 v0xc10c4f840_0, 0;
+    %jmp T_0.1;
+T_0.0 ;
+    %load/vec4 v0xc10c4f8e0_0;
+    %assign/vec4 v0xc10c4f840_0, 0;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0;
+    .scope S_0x1051fada0;
+T_1 ;
+Ewait_0 .event/or E_0xc110393c0, E_0x0;
+    %wait Ewait_0;
+    %load/vec4 v0xc10c4f840_0;
+    %store/vec4 v0xc10c4f8e0_0, 0, 2;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0xc10c4f660_0, 0, 1;
+    %load/vec4 v0xc10c4f840_0;
+    %dup/vec4;
+    %pushi/vec4 0, 0, 2;
+    %cmp/u;
+    %jmp/1 T_1.0, 6;
+    %dup/vec4;
+    %pushi/vec4 1, 0, 2;
+    %cmp/u;
+    %jmp/1 T_1.1, 6;
+    %dup/vec4;
+    %pushi/vec4 2, 0, 2;
+    %cmp/u;
+    %jmp/1 T_1.2, 6;
+    %pushi/vec4 0, 0, 2;
+    %store/vec4 v0xc10c4f8e0_0, 0, 2;
+    %jmp T_1.4;
+T_1.0 ;
+    %load/vec4 v0xc10c4f7a0_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_1.5, 8;
+    %pushi/vec4 1, 0, 2;
+    %store/vec4 v0xc10c4f8e0_0, 0, 2;
+T_1.5 ;
+    %jmp T_1.4;
+T_1.1 ;
+    %pushi/vec4 2, 0, 2;
+    %store/vec4 v0xc10c4f8e0_0, 0, 2;
+    %jmp T_1.4;
+T_1.2 ;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v0xc10c4f660_0, 0, 1;
+    %pushi/vec4 0, 0, 2;
+    %store/vec4 v0xc10c4f8e0_0, 0, 2;
+    %jmp T_1.4;
+T_1.4 ;
+    %pop/vec4 1;
+    %jmp T_1;
+    .thread T_1, $push;
+# The file index is used to find the file name in the following table.
+:file_names 5;
+    "N/A";
+    "<interactive>";
+    "-";
+    "/Users/davidrossel/Documents/Uni/Chipdesign/Chipdesign-code/Digital_IC_Design_LAYR/KMAC/encode_string/encode_string.sv";
+    "/Users/davidrossel/Documents/Uni/Chipdesign/Chipdesign-code/Digital_IC_Design_LAYR/KMAC/enc8/enc8.sv";

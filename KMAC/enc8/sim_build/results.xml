@@ -1,0 +1,8 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1767200587" />
+    <testcase name="test_enc8_identity" classname="test_enc8" file="/Users/davidrossel/Documents/Uni/Chipdesign/Chipdesign-code/Digital_IC_Design_LAYR/KMAC/enc8/test_enc8.py" lineno="5" time="0.0005502700805664062" sim_time_ns="12.0" ratio_time="21807.47313691508" />
+    <testcase name="test_enc8_full_range" classname="test_enc8" file="/Users/davidrossel/Documents/Uni/Chipdesign/Chipdesign-code/Digital_IC_Design_LAYR/KMAC/enc8/test_enc8.py" lineno="31" time="0.003080129623413086" sim_time_ns="25.6" ratio_time="8311.33852465361" />
+    <testcase name="test_enc8_context" classname="test_enc8" file="/Users/davidrossel/Documents/Uni/Chipdesign/Chipdesign-code/Digital_IC_Design_LAYR/KMAC/enc8/test_enc8.py" lineno="57" time="0.00015091896057128906" sim_time_ns="8.0" ratio_time="53008.581358609794" />
+  </testsuite>
+</testsuites>

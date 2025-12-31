@@ -1,3 +1,4 @@
+`timescale 1ns/1ps
 module enc8_kmac (
     input  logic [7:0] x,        // x ∈ {0,...,255}
     output logic [7:0] enc8_out  // 8-bit string representing x

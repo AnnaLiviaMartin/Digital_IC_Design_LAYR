@@ -1,0 +1,26 @@
+#! /opt/homebrew/Cellar/icarus-verilog/12.0/bin/vvp
+:ivl_version "12.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 12;
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/system.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/vhdl_sys.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/vhdl_textio.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/v2005_math.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/va_math.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/v2009.vpi";
+S_0x101988d00 .scope package, "$unit" "$unit" 2 1;
+ .timescale 0 0;
+S_0x10198a800 .scope module, "enc8_kmac" "enc8_kmac" 3 2;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 8 "x";
+    .port_info 1 /OUTPUT 8 "enc8_out";
+o0x85f420040 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+L_0x10198ae00 .functor BUFZ 8, o0x85f420040, C4<00000000>, C4<00000000>, C4<00000000>;
+v0x101988e80_0 .net "enc8_out", 7 0, L_0x10198ae00;  1 drivers
+v0x10198ad50_0 .net "x", 7 0, o0x85f420040;  0 drivers
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "-";
+    "/Users/davidrossel/Documents/Uni/Chipdesign/Chipdesign-code/Digital_IC_Design_LAYR/KMAC/enc8/enc8.sv";

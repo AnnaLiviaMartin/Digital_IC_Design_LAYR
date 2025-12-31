@@ -1,3 +1,4 @@
+`timescale 1ns/1ps
 module kmac_right_pad (
     input  logic             clk,
     input  logic             rst_n,
@@ -49,28 +50,19 @@ module kmac_right_pad (
         endcase
     end
     
-    // **NIST KMAC right-pad Logik** (Yosys-kompatibel)
+    // **NIST KMAC right-pad Logik** (Yosys-kompatibel, synthesizable)
     logic [63:0] pad_data;
-    logic [15:0] zero_count;
-    
-    assign zero_count = bit_len + 1;
     
     always_comb begin
         pad_data = 64'b0;
         
-        // 1. "1" Bit an Position bit_len (nach M)
+        // 1. "1" Bit an Position bit_len (nach M), Bits[0:bit_len-1] = 0
         if (bit_len < 64) begin
-            pad_data[bit_len] = 1'b1;
+            pad_data[bit_len] = 1'b1;  // Set the '1' bit
+            // Bits 0 to bit_len-1 are already 0 (pad_data initialized to 0)
         end
         
-        // 2. 0^(bit_len+1) Nullen (Bits 0 bis bit_len)
-        if (bit_len < 64) begin
-            for (int i = 0; i <= bit_len; i++) begin
-                pad_data[i] = 1'b0;
-            end
-        end
-        
-        // 3. enc8-Sequence (fixe Positionen nach Nullen)
+        // 2. enc8-Sequence (fixe Positionen nach Nullen, Bits 32-63)
         pad_data[39:32] = enc8_0;   // enc8(0)
         pad_data[47:40] = enc8_1;   // enc8(1)  
         pad_data[55:48] = enc8_2;   // enc8(2)

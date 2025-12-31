@@ -1,3 +1,4 @@
+`timescale 1ns/1ps
 module kmac_encode_string #(
     parameter int MAX_LEN = 32  // Maximale Stringlänge
 )(
