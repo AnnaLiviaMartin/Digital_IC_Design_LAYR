@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module Keccak #(
     parameter int C_BITS = 8,    // Kapazität Bits
     parameter int X_BITS = 8,    // Nachrichteneingabe Bits
@@ -16,7 +17,6 @@ module Keccak #(
     logic pad_start, pad_done;
     logic [8:0]        pad_r, pad_m;  // 9 Bit für pad10_1
     logic [L_BITS-1:0] pad_P;
-    logic [23:0]       pad_z;
     
     pad10_1 #(
         .R_BITS(9),
@@ -29,7 +29,6 @@ module Keccak #(
         .r(pad_r),
         .m(pad_m),
         .P(pad_P),
-        .z_out(pad_z),
         .done(pad_done)
     );
     
@@ -62,8 +61,8 @@ module Keccak #(
         pad_start  = 1'b0;
         done       = 1'b0;
         L          = '0;
-        pad_r      = 9'd1600 - c;  // 1600 - c für pad10_1
-        pad_m      = X;            // X als m
+        pad_r      = 9'(1600 - int'(c));  // 1600 - c für pad10_1
+        pad_m      = 9'(X);               // X als m
         
         unique case (state)
             IDLE: begin
