@@ -1,0 +1,14 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1767811710" />
+    <testcase name="test_kmac_idle" classname="test_KMACStatemachine" file="/Users/davidrossel/Documents/Uni/Chipdesign/Chipdesign-code/Digital_IC_Design_LAYR/KMAC/KMACStatemachine/test_KMACStatemachine.py" lineno="5" time="0.0018591880798339844" sim_time_ns="0.0" ratio_time="0.0">
+      <failure error_type="ValueError" error_msg="Can't convert LogicArray to int: it contains non-0/1 values" />
+    </testcase>
+    <testcase name="test_kmac_reset" classname="test_KMACStatemachine" file="/Users/davidrossel/Documents/Uni/Chipdesign/Chipdesign-code/Digital_IC_Design_LAYR/KMAC/KMACStatemachine/test_KMACStatemachine.py" lineno="13" time="0.00014901161193847656" sim_time_ns="0.0" ratio_time="0.0">
+      <failure error_type="TypeError" error_msg="'&lt;=' not supported between instances of 'LogicObject' and 'int'" />
+    </testcase>
+    <testcase name="test_kmac_start_transition" classname="test_KMACStatemachine" file="/Users/davidrossel/Documents/Uni/Chipdesign/Chipdesign-code/Digital_IC_Design_LAYR/KMAC/KMACStatemachine/test_KMACStatemachine.py" lineno="23" time="9.584426879882812e-05" sim_time_ns="0.0" ratio_time="0.0">
+      <failure error_type="TypeError" error_msg="'&lt;=' not supported between instances of 'LogicObject' and 'int'" />
+    </testcase>
+  </testsuite>
+</testsuites>
