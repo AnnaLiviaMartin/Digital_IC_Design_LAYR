@@ -14,6 +14,7 @@ module kmac_top_cshake #(
     output logic                  mac_done
 );
 
+
     typedef enum logic [4:0] {
         IDLE, KEY_BYTEPAD, ENCODE_STR, STR_BYTEPAD, LEFT_CONCAT,
         ABSORB_KEY_STR, MSG_BYTEPAD, ABSORB_MSG, RIGHT_PAD, SQUEEZE_MAC

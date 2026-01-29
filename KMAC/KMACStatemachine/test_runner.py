@@ -4,8 +4,7 @@ from cocotb_tools.runner import get_runner
 
 def test_my_design_runner():
     sim = os.getenv("SIM", "icarus")
-    proj_path = Path(__file__).resolve().parent  # Keccak-Ordner
-
+    proj_path = Path(__file__).resolve().parent
     sources = [
         proj_path / "KMACStatemachine.sv",
         proj_path.parent / "pad10_1" / "pad10_1.sv",
