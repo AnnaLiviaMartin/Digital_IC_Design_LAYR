@@ -1,8 +1,7 @@
-from enum import Enum
-from typing import Literal
 import ascon
 
-BYTE_ORDER : Literal["little", "big"] = "big"
+from message import BYTE_ORDER
+
 SECRET_KEY : int = 0b1010101010101010101010101010101010101010101010101010101010101010
 SECRET_KEY_BYTES : bytes = SECRET_KEY.to_bytes(16, byteorder=BYTE_ORDER)
 
@@ -15,20 +14,3 @@ def kmac(key : bytes, message : bytes) -> bytes:
 
 def challenge_result(message : bytes) -> bytes:
     return hash(kmac(SECRET_KEY_BYTES, message))
-
-class Packet_Type(Enum):
-    REQUEST_OPEN = 1
-    CHALLENGE = 2
-    CHALLENGE_ANSWER = 3
-    GRANT_ACCESS = 4
-    DENY_ACCESS = 5
-    ERROR = 6
-
-class Packet:
-    def __init__(self, type : Packet_Type, content : bytes = bytes()):
-        self.type = type
-        self.content = content
-
-    def __repr__(self):
-        return f"Packet(type='{self.type}', content={int.from_bytes(self.content, byteorder=BYTE_ORDER)})"
-    
