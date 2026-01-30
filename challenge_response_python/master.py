@@ -1,5 +1,5 @@
 #Door Opener
-from cryptomodule import challenge_result
+from cryptomodule import digest
 from message import Message_Type, Message
 from communication import CommunicationInterface, SimulatedSpi, Spi
 
@@ -14,7 +14,7 @@ def spi_master():
     if response.type != Message_Type.CHALLENGE:
         exit(-1)
         
-    result = challenge_result(response.content)
+    result = digest(response.content)
     request = Message(Message_Type.CHALLENGE_ANSWER, result)
 
     com.send(request)

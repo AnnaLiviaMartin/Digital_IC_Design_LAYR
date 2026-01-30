@@ -1,7 +1,7 @@
 #Lock
 import secrets
 
-from cryptomodule import challenge_result
+from cryptomodule import digest
 from message import Message_Type, Message
 from communication import CommunicationInterface, SimulatedSpi, Spi
 
@@ -19,7 +19,7 @@ def spi_slave():
             case Message_Type.REQUEST_OPEN:
                 random = rng()
                 response = Message(Message_Type.CHALLENGE, random)
-                expected_result = challenge_result(random)
+                expected_result = digest(random)
             case Message_Type.CHALLENGE_ANSWER:
                 if expected_result == request.content:
                     open()

@@ -25,7 +25,7 @@ class CommunicationInterface(ABC):
         pass
 
 class SimulatedSpi(CommunicationInterface):
-    def __init__(self, name : Literal["slave", "master"], sleep_seconds_after_send : float = 5):
+    def __init__(self, name : Literal["slave", "master"], sleep_seconds_after_send : float = 1):
         self.name = name
         self.sleepSeconds : float = sleep_seconds_after_send
         self.input : queue.Queue[bytes] = (MOSI_QUEUE if name == "slave" else MISO_QUEUE)
