@@ -8,7 +8,7 @@ import socket
 
 import spidev
 
-from message import Message
+from message import Message, Message_Type
 
 #SPI simulation queues
 MISO_QUEUE : queue.Queue[bytes] = queue.Queue()
@@ -33,32 +33,31 @@ class CommunicationInterface(ABC):
 
 # undefined behaviour on same process
 class SocketSimulatedSpi(CommunicationInterface):
+    
     def __init__(self, name : Literal["slave", "master"], sleep_seconds_after_send : float = 1):
         self.name = name
         self.sleepSeconds : float = sleep_seconds_after_send
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         if name == "slave":
-            print("slave binding")
             s.bind((SLAVE_LISTEN, PORT))
-            print("slave listening")
             s.listen()
-            print("slave waiting for accept")
+            self.socket : socket.socket = s
             s = s.accept()[0]
-            print("slave accepted")
         else:
-            for _ in range(5):
+            for _ in range(8):
                 try:
-                    print("master trying to connect")
                     s.connect((MASTER_CONNECT, PORT))
                     break
                 except ConnectionRefusedError:
-                    time.sleep(1)
-        self.conn = s
+                    time.sleep(0.25)
+        self.conn : socket.socket = s
 
     def send(self, data : Message):
         self.conn.send(data.serialize())
         print_send(self, data)
         time.sleep(self.sleepSeconds)
+        if self.name == "slave" and (data.type == Message_Type.GRANT_ACCESS or data.type == Message_Type.DENY_ACCESS):
+            self.conn = self.socket.accept()[0]
 
     def receive(self):
         received = Message.deserialize(self.conn.recv(Message.MAX_LENGTH_BYTES))
