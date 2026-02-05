@@ -4,6 +4,8 @@ from typing import Any, Literal
 import queue
 import time
 
+import socket
+
 import spidev
 
 from message import Message
@@ -11,6 +13,11 @@ from message import Message
 #SPI simulation queues
 MISO_QUEUE : queue.Queue[bytes] = queue.Queue()
 MOSI_QUEUE : queue.Queue[bytes] = queue.Queue()
+
+#Socket
+SLAVE_LISTEN : str = "0.0.0.0"
+MASTER_CONNECT : str = "127.0.0.1"
+PORT : int = 31717
 
 class CommunicationInterface(ABC):
     def __init__(self):
@@ -24,7 +31,41 @@ class CommunicationInterface(ABC):
     def receive(self) -> Message:
         pass
 
-class SimulatedSpi(CommunicationInterface):
+# undefined behaviour on same process
+class SocketSimulatedSpi(CommunicationInterface):
+    def __init__(self, name : Literal["slave", "master"], sleep_seconds_after_send : float = 1):
+        self.name = name
+        self.sleepSeconds : float = sleep_seconds_after_send
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        if name == "slave":
+            print("slave binding")
+            s.bind((SLAVE_LISTEN, PORT))
+            print("slave listening")
+            s.listen()
+            print("slave waiting for accept")
+            s = s.accept()[0]
+            print("slave accepted")
+        else:
+            for _ in range(5):
+                try:
+                    print("master trying to connect")
+                    s.connect((MASTER_CONNECT, PORT))
+                    break
+                except ConnectionRefusedError:
+                    time.sleep(1)
+        self.conn = s
+
+    def send(self, data : Message):
+        self.conn.send(data.serialize())
+        print_send(self, data)
+        time.sleep(self.sleepSeconds)
+
+    def receive(self):
+        received = Message.deserialize(self.conn.recv(Message.MAX_LENGTH_BYTES))
+        print_receive(self, received)
+        return received
+    
+class QueueSimulatedSpi(CommunicationInterface):
     def __init__(self, name : Literal["slave", "master"], sleep_seconds_after_send : float = 1):
         self.name = name
         self.sleepSeconds : float = sleep_seconds_after_send

@@ -13,6 +13,9 @@ class Message_Type(Enum):
     ERROR = 6
 
 class Message:
+
+    MAX_LENGTH_BYTES : int = 33
+
     def __init__(self, type : Message_Type, content : bytes = bytes()):
         self.type = type
         if self.type in (Message_Type.CHALLENGE, Message_Type.CHALLENGE_ANSWER):

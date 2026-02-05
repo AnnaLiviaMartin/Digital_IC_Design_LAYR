@@ -20,7 +20,9 @@ def kmac128(key : bytes, message : bytes) -> bytes:
 
 def digest(nonce : bytes, custom : bool = False) -> bytes:
     return (
-        custom_asconHash256(kmac128(SECRET_KEY_BYTES, nonce)) if custom else asconHash256(kmac128(SECRET_KEY_BYTES, nonce))
+        custom_asconHash256(kmac128(SECRET_KEY_BYTES, nonce))
+        if custom
+        else asconHash256(kmac128(SECRET_KEY_BYTES, nonce))
     )
 
 if __name__ == "__main__":

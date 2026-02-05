@@ -3,11 +3,11 @@ import secrets
 
 from cryptomodule import digest
 from message import Message_Type, Message
-from communication import CommunicationInterface, SimulatedSpi, Spi
+from communication import CommunicationInterface, QueueSimulatedSpi, SocketSimulatedSpi, Spi
 
-RANDOM_BYTES_COUNT = 32
+RANDOM_BYTES_COUNT : int = 32
 
-com : CommunicationInterface = SimulatedSpi("slave")
+com : CommunicationInterface = QueueSimulatedSpi("slave")
 
 def spi_slave():
     response : Message

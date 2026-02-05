@@ -1,9 +1,9 @@
 #Door Opener
 from cryptomodule import digest
 from message import Message_Type, Message
-from communication import CommunicationInterface, SimulatedSpi, Spi
+from communication import CommunicationInterface, QueueSimulatedSpi, SocketSimulatedSpi, Spi
 
-com : CommunicationInterface = SimulatedSpi("master")
+com : CommunicationInterface = QueueSimulatedSpi("master")
 
 def spi_master():
     request = Message(Message_Type.REQUEST_OPEN)
