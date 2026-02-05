@@ -1,0 +1,9 @@
+set_io --warn-no-port clk 21
+
+set_io --warn-no-port rled 95
+
+set_io --warn-no-port gleds[0] 97
+set_io --warn-no-port gleds[1] 98
+set_io --warn-no-port gleds[2] 99
+set_io --warn-no-port gleds[3] 96
+

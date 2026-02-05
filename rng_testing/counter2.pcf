@@ -1,0 +1,11 @@
+set_io --warn-no-port clk 35
+
+set_io --warn-no-port rled 26
+
+set_io --warn-no-port gleds[0] 23
+set_io --warn-no-port gleds[1] 25
+set_io --warn-no-port gleds[2] 21
+set_io --warn-no-port gleds[3] 27
+
+set_io --warn-no-port reset 20
+
