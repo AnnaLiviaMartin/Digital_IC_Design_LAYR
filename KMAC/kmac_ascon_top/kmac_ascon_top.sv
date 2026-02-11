@@ -60,7 +60,7 @@ module kmac_ascon_top #(
             end
             KMAC_MODE:   if (kmac_done)   next_top_state = IDLE_TOP;
             ASCON_MODE: begin
-                if (kmac_start)      next_top_state = KMAC_MODE;  // ← DIESE ZEILE HINZUFÜGEN!
+                if (kmac_start)      next_top_state = KMAC_MODE;  
                 else if (hash_ready) next_top_state = IDLE_TOP;
             end
 
@@ -82,9 +82,9 @@ module kmac_ascon_top #(
         .msg_block(msg_block),
         .msg_bit_len(msg_bit_len),
         .mac_out(kmac_out),
-        .mac_done(kmac_internal_done)  // ← WICHTIG!
+        .mac_done(kmac_internal_done)
     );
-    assign kmac_done = kmac_internal_done;  // Echtem Signal verbinden!
+    assign kmac_done = kmac_internal_done;  
 
     // ========================================
     // ASCON INSTANZ
