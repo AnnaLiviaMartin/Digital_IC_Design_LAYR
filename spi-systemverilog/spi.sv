@@ -67,10 +67,10 @@ logic [7:0] byte_data_sent;
 always_ff @(posedge clk) begin
     if (SSEL_active) begin
         if (SSEL_startmessage)
-            byte_data_sent <= cnt;  // First byte: message count
+            byte_data_sent <= 8'h41;;  // First byte: message count
         else if (SCK_fallingedge) begin
             if (bitcnt == 3'b000)
-                byte_data_sent <= 8'h00; // Then send 0s
+                byte_data_sent <= 8'h41;; // Then send 0s
             else
                 byte_data_sent <= {byte_data_sent[6:0], 1'b0};
         end
