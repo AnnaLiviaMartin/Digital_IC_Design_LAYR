@@ -12,13 +12,22 @@ LOCATE COMP "reset" SITE "D6";
 IOBUF  PORT "reset" PULLMODE=UP IO_TYPE=LVCMOS33 DRIVE=4;
 
 # =========================================================================
-# Button-Eingang: z.B. FIRE1 (btn[1] an R1)
+# Grüne LEDs: led[0:4] (B2, C2, C1, D2, D1)
 # =========================================================================
-LOCATE COMP "button" SITE "R1";
-IOBUF  PORT "button" PULLMODE=DOWN IO_TYPE=LVCMOS33 DRIVE=4;
+LOCATE COMP "gleds[0]" SITE "B2";
+LOCATE COMP "gleds[1]" SITE "C2";
+LOCATE COMP "gleds[2]" SITE "C1";
+LOCATE COMP "gleds[3]" SITE "D2";
+LOCATE COMP "gleds[4]" SITE "D1";
+
+IOBUF PORT "gleds[0]" IO_TYPE=LVCMOS33;
+IOBUF PORT "gleds[1]" IO_TYPE=LVCMOS33;
+IOBUF PORT "gleds[2]" IO_TYPE=LVCMOS33;
+IOBUF PORT "gleds[3]" IO_TYPE=LVCMOS33;
+IOBUF PORT "gleds[4]" IO_TYPE=LVCMOS33;
 
 # =========================================================================
-# LED-Ausgang: z.B. led[0] an B2
+# Rote LED: led[5] (E2)
 # =========================================================================
-LOCATE COMP "led" SITE "B2";
-IOBUF  PORT "led" IO_TYPE=LVCMOS33;
+LOCATE COMP "rled" SITE "E2";
+IOBUF  PORT "rled" IO_TYPE=LVCMOS33;
