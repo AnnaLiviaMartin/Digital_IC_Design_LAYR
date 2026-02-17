@@ -1,10 +1,24 @@
-LOCATE COMP "reset" SITE "R1";  # FIRE1
-LOCATE COMP "button" SITE "T1";  # FIRE2
-IOBUF  PORT "reset" PULLMODE=DOWN IO_TYPE=LVCMOS33 DRIVE=4;
+# =========================================================================
+# Clock (25 MHz Onboard-Oszillator an G2)
+# =========================================================================
+LOCATE COMP "clk" SITE "G2";
+IOBUF  PORT "clk" IO_TYPE=LVCMOS33;
+FREQUENCY PORT "clk" 25 MHZ;
+
+# =========================================================================
+# Reset-Taster: z.B. BTN_PWRn (btn[0] an D6, aktiv LOW auf dem Board)
+# =========================================================================
+LOCATE COMP "reset" SITE "D6";
+IOBUF  PORT "reset" PULLMODE=UP IO_TYPE=LVCMOS33 DRIVE=4;
+
+# =========================================================================
+# Button-Eingang: z.B. FIRE1 (btn[1] an R1)
+# =========================================================================
+LOCATE COMP "button" SITE "R1";
 IOBUF  PORT "button" PULLMODE=DOWN IO_TYPE=LVCMOS33 DRIVE=4;
 
-LOCATE COMP "clk" SITE "G2";
-IOBUF  PORT "clk" PULLMODE=NONE IO_TYPE=LVCMOS33;
-
+# =========================================================================
+# LED-Ausgang: z.B. led[0] an B2
+# =========================================================================
 LOCATE COMP "led" SITE "B2";
-IOBUF  PORT "led" PULLMODE=NONE IO_TYPE=LVCMOS33 DRIVE=4;
+IOBUF  PORT "led" IO_TYPE=LVCMOS33;
