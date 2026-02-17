@@ -44,11 +44,14 @@ logic [7:0] byte_data_received;
 // wenn SSEL aktiv: ein Bit aus MOSI (synchronisiert = MOSI_data) in das 8-Bit-Register byte_data_received eingeschoben
 // Einlesen bei SCK_risingedge: 
 always_ff @(posedge clk) begin
-    if (~SSEL_active)
+    if (~SSEL_active) begin
         bitcnt <= 3'b000;
-    else if (SCK_risingedge) begin
+    end
+    if (bitcnt == 3'b111) begin
+        bitcnt <= 3'b000;
+    end else begin
         bitcnt <= bitcnt + 3'b001;
-        byte_data_received <= {byte_data_received[6:0], MOSI_data}; // Shift in MSB first
+        byte_data_received <= {byte_data_received[6:0], MOSI_data};
     end
 end
 

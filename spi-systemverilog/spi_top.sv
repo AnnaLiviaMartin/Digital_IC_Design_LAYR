@@ -6,15 +6,12 @@ module top (
   inout  wire spi_miso
 );
 
-  logic miso_buf;
-  assign spi_miso = miso_buf ? 1'bz : 1'b0;
-
   SPI_slave u_spi (
     .clk  (clk_25m),
     .SCK  (spi_sclk),
     .SSEL (spi_cs_0),
     .MOSI (spi_mosi),
-    .MISO (miso_buf)
+    .MISO (spi_miso)
   );
 
 endmodule
