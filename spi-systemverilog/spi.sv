@@ -50,26 +50,23 @@ reg [7:0] byte_data_sent;
 
 always @(posedge clk)
 begin
-  if (SSEL_active)
+  if (~SSEL_active)
+    byte_data_sent <= 8'h00;
+
+  else if (byte_received)
   begin
-    if (SSEL_startmessage)
-    begin
-      byte_data_sent <= 8'h05;  
-    end
-    else if (SCK_fallingedge)
-    begin
-      if (byte_data_received == 8'h05 || 
-          byte_data_received == 8'h03)
-      begin
-        byte_data_sent <= 8'h0A;   // sende 'A'
-      end
-      else
-      begin
-        byte_data_sent <= byte_data_received;
-      end
-    end
+    if (byte_data_received == 8'h05 ||
+        byte_data_received == 8'h03)
+      byte_data_sent <= 8'h0A;
+    else
+      byte_data_sent <= byte_data_received;
+  end
+  else if (SCK_fallingedge)
+  begin
+    byte_data_sent <= {byte_data_sent[6:0], 1'b0};
   end
 end
+
 
 assign MISO = byte_data_sent[7];  // send MSB first
 // we assume that there is only one slave on the SPI bus
