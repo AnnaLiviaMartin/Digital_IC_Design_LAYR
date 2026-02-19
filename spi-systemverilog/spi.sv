@@ -51,12 +51,15 @@ reg [7:0] byte_data_sent;
 always @(posedge clk)
 if(SSEL_active)
 begin
-    if (byte_received)
+    if(SCK_fallingedge)
     begin
-      if (byte_data_received == 8'h05)
-        byte_data_sent <= 8'h0A;
-      else
-        byte_data_sent <= byte_data_received;
+        if (byte_received)
+        begin
+        if (byte_data_received == 8'h05)
+            byte_data_sent <= 8'h0A;
+        else
+            byte_data_sent <= byte_data_received;
+        end    
     end
 end
 
