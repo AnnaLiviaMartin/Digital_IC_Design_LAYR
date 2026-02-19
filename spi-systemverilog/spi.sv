@@ -63,7 +63,7 @@ begin
   end
 end
 
-assign MISO = byte_data_sent[7];  // send MSB first
+assign MISO = byte_data_received[7];  // send MSB first
 // we assume that there is only one slave on the SPI bus
 // so we don't bother with a tri-state buffer for MISO
 // otherwise we would need to tri-state MISO when SSEL is inactive
