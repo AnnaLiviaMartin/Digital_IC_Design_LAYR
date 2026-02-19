@@ -56,14 +56,18 @@ begin
   else
   if(SCK_fallingedge)
   begin
-    if(bitcnt==3'b000)
       byte_data_sent <= 8'h00;  // after that, we send 0s
-    else
-      byte_data_sent <= {byte_data_sent[6:0], 1'b0}; // 8'h05;
+    else if(byte_data_received == 1'b101 || byte_data_received == 1'b011)begin
+        byte_data_sent <= 1'h0A;
+    end
+    else begin
+        byte_data_sent <= byte_data_received;
+    end
+      //byte_data_sent <= {byte_data_sent[6:0], 1'b0}; // 8'h05;
   end
 end
 
-assign MISO = byte_data_received[7];  // send MSB first
+assign MISO = byte_data_sent[7];  // send MSB first
 // we assume that there is only one slave on the SPI bus
 // so we don't bother with a tri-state buffer for MISO
 // otherwise we would need to tri-state MISO when SSEL is inactive
