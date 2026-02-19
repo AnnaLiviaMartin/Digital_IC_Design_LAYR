@@ -56,8 +56,8 @@ begin
   else
   if(SCK_fallingedge)
       byte_data_sent <= 8'h00;  // after that, we send 0s
-  else if(byte_data_received == 1'b00000101)begin
-        byte_data_sent <= 1'h0A;
+  else if(byte_data_received == 8'b00000101)begin
+        byte_data_sent <= 8'h0A;
     end
   else begin
         byte_data_sent <= byte_data_received;
