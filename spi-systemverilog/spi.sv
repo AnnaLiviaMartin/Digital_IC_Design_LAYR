@@ -33,7 +33,6 @@ begin
   if(SCK_risingedge)
   begin
     bitcnt <= bitcnt + 3'b001;
-
     // implement a shift-left register (since we receive the data MSB first)
     byte_data_received <= {byte_data_received[6:0], MOSI_data};
   end
@@ -53,7 +52,7 @@ always @(posedge clk)
 if(SSEL_active)
 begin
   if(SSEL_startmessage)
-    byte_data_sent <= cnt;  // first byte sent in a message is the message count
+    byte_data_sent <= 1'b101;  // first byte sent in a message is the message count
   else
   if(SCK_fallingedge)
   begin
