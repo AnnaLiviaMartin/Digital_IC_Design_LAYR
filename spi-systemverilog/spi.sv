@@ -48,29 +48,22 @@ reg [7:0] byte_data_sent;
 //reg [7:0] cnt;
 //always @(posedge clk) if(SSEL_startmessage) cnt<=cnt+8'h1;  // count the messages
 
-reg [7:0] tx_data;
-reg [7:0] tx_shift;
-
 always @(posedge clk)
+if(SSEL_active)
 begin
-  if (~SSEL_active)
-    tx_shift <= 8'h00;
-  else if (byte_received)
+  if(SSEL_startmessage)
+    byte_data_sent <= 8'h05;  // first byte sent in a message is the message count
+  else
+  if(SCK_fallingedge)
   begin
-    if (byte_data_received == 8'h05 ||
-        byte_data_received == 8'h03)
-      tx_data <= 8'h0A;
+    if(bitcnt==3'b000)
+      byte_data_sent <= 8'h00;  // after that, we send 0s
     else
-      tx_data <= byte_data_received;
+      byte_data_sent <= {byte_data_sent[6:0], 1'b0}; // 8'h05;
   end
-  else if (SSEL_startmessage)
-    tx_shift <= tx_data;   // sauberer Ladepunkt
-
-  else if (SCK_fallingedge)
-    tx_shift <= {tx_shift[6:0], 1'b0};
 end
 
-assign MISO = tx_shift[7];  // send MSB first
+assign MISO = byte_data_received[7];  // send MSB first
 // we assume that there is only one slave on the SPI bus
 // so we don't bother with a tri-state buffer for MISO
 // otherwise we would need to tri-state MISO when SSEL is inactive
