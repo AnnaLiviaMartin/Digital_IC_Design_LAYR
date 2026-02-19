@@ -4,7 +4,7 @@ module top (
   input  logic spi_cs_0,    // SSEL = spi_cs_0 (Haupt-CS)
   input  logic spi_mosi,
   output wire spi_miso
-  output logic LED;
+  output logic led;
 );
 
   SPI_slave u_spi (
@@ -13,7 +13,7 @@ module top (
     .SSEL (spi_cs_0),
     .MOSI (spi_mosi),
     .MISO (spi_miso),
-    .LED  (LED)
+    .LED  (led)
   );
 
 endmodule
