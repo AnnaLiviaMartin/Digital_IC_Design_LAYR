@@ -63,7 +63,7 @@ begin
   end
   else if (SCK_fallingedge)
   begin
-    byte_data_sent <= {byte_data_sent[6:0], 1'b0};
+    byte_data_sent <= {1'b0, byte_data_sent[6:0]};
   end
 end
 
