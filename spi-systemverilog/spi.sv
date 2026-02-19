@@ -49,20 +49,21 @@ reg [7:0] byte_data_sent;
 //always @(posedge clk) if(SSEL_startmessage) cnt<=cnt+8'h1;  // count the messages
 
 always @(posedge clk)
-if(SSEL_active)
 begin
-  if(SSEL_startmessage)
-    byte_data_sent <= 8'h00;  // first byte sent in a message is the message count
-  else
-  if(SCK_fallingedge)
-      byte_data_sent <= 8'h00;  // after that, we send 0s
-  else if(byte_data_received == 8'b00000101)begin
+  if (SSEL_active)
+  begin
+    if (byte_received)
+    begin
+      if (byte_data_received == 8'h05)
         byte_data_sent <= 8'h0A;
-    end
-  else begin
+      else
         byte_data_sent <= byte_data_received;
     end
-      //byte_data_sent <= {byte_data_sent[6:0], 1'b0}; // 8'h05;
+    else if (SCK_fallingedge)
+    begin
+      byte_data_sent <= {byte_data_sent[6:0], 1'b0};
+    end
+  end
 end
 
 assign MISO = byte_data_sent[7];  // send MSB first
