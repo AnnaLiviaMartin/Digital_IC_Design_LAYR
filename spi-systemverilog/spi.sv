@@ -45,8 +45,8 @@ reg LED;
 always @(posedge clk) if(byte_received) LED <= byte_data_received[0];
 reg [7:0] byte_data_sent;
 
-reg [7:0] cnt;
-always @(posedge clk) if(SSEL_startmessage) cnt<=cnt+8'h1;  // count the messages
+//reg [7:0] cnt;
+//always @(posedge clk) if(SSEL_startmessage) cnt<=cnt+8'h1;  // count the messages
 
 always @(posedge clk)
 if(SSEL_active)
