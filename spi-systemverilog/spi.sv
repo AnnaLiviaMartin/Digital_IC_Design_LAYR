@@ -59,7 +59,7 @@ begin
     if(bitcnt==3'b000)
       byte_data_sent <= 8'h00;  // after that, we send 0s
     else
-      byte_data_sent <= {byte_data_sent[6:0], 1'b0};
+      byte_data_sent <= 8'h05; //{byte_data_sent[6:0], 1'b0};
   end
 end
 
