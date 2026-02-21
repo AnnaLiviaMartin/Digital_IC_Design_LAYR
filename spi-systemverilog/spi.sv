@@ -56,9 +56,10 @@ logic [7:0] response_byte;
 logic response_ready; // tag
 
 always_ff @(posedge clk) begin
-    if (!SSEL_active)
+    if (!SSEL_active) begin
         state <= IDLE;
         next_state <= IDLE;
+    end
     else
         state <= next_state;
     
