@@ -7,16 +7,6 @@ output logic [1:0] state, next_state;
 
 output LED;
 
-//reg valid_out;
-//char_automaton automat (
-//    .clk(clk),
-//    .rst_n(~SSEL_active),
-//    .valid_in(byte_received),
-//    .char_in(byte_data_received),
-//    .valid_out(valid_out),
-//    .char_out(byte_data_sent)
-//);
-
 // sync SCK to the FPGA clock using a 3-bit shift register
 reg [2:0] SCKr;  always @(posedge clk) SCKr <= {SCKr[1:0], SCK};
 wire SCK_risingedge = (SCKr[2:1]==2'b01);  // now we can detect SCK rising edges
@@ -56,7 +46,8 @@ always @(posedge clk) byte_received <= SSEL_active && SCK_risingedge && (bitcnt=
 reg LED;
 always @(posedge clk) if(byte_received) LED <= byte_data_received[0];
 reg [7:0] byte_data_sent;
-
+/* 
+// oberer automat
 localparam IDLE = 8'h00;
 localparam CHECK_BYTE = 8'h01;
 localparam SEND_RESPONSE = 8'h02;
@@ -81,7 +72,7 @@ always_comb begin
     else
         next_state = IDLE;
 end
-
+//   if(SCK_fallingedge)
 always_ff @(posedge clk) begin
     if (state == CHECK_BYTE) begin
         if (byte_data_received == 8'h03)
@@ -89,17 +80,21 @@ always_ff @(posedge clk) begin
         else
             response_byte <= byte_data_received;
     end
-end
+end */
 
-always @(posedge clk)
-if(SSEL_active)
+// unterer automat
+always @(posedge clk) // schnelle clk
+if(SSEL_active) // dann übertragen mit dem slave
 begin
-  if(SCK_fallingedge)
-  begin
+  if(byte_received) // wenn byte empfangen, dann laden
+    byte_data_sent <= byte_data_received;
+
+  if(SCK_fallingedge) // runterrechnen von clk, nur bei langsamer clk machen wir etwas
+  begin    
     if(bitcnt==3'b000)
       byte_data_sent <= 8'h00;
     else
-      byte_data_sent <= response_byte;
+      byte_data_sent <= {byte_data_sent[6:0], 1'b0};
   end
 end
 
