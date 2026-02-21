@@ -53,12 +53,14 @@ localparam CHECK_BYTE = 8'h01;
 localparam SEND_RESPONSE = 8'h02;
 reg [1:0] state, next_state;
 logic [7:0] response_byte;
-logic response_ready; // tag
+logic [0:0] response_ready; // tag
 
 always_ff @(posedge clk) begin
     if (!SSEL_active) begin
         state <= IDLE;
         next_state <= IDLE;
+        response_ready <= 1'b0;
+        response_byte <= 8'h00;
     end
     else
         state <= next_state;
