@@ -59,6 +59,8 @@ always_ff @(posedge clk) begin
     if (!SSEL_active) begin
         state <= IDLE;
         next_state <= IDLE;
+        response_ready <= 1'b0;
+        response_byte <= 8'h00;
     end
     else
         state <= next_state;
@@ -73,11 +75,8 @@ always_ff @(posedge clk) begin
 end
 
 always_comb begin
-    if (state == IDLE && byte_received) begin
+    if (state == IDLE && byte_received)
         next_state = CHECK_BYTE;
-        response_ready = 1'b0;
-        response_byte = 8'h00;
-    end
     else if (state == CHECK_BYTE && response_ready)
         next_state = SEND_RESPONSE;
     else if (state == SEND_RESPONSE && bitcnt == 3'b111)
