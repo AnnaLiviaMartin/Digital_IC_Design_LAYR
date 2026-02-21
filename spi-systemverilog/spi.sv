@@ -5,6 +5,17 @@ input SCK, SSEL, MOSI;
 output MISO;
 
 output LED;
+
+reg valid_out;
+char_automaton automat (
+    .clk(clk),
+    .rst_n(SSEL_startmessage),
+    .valid_in(SSEL_endmessage),
+    .char_in(byte_data_received),
+    .valid_out(valid_out),
+    .char_out(byte_data_sent)
+);
+
 // sync SCK to the FPGA clock using a 3-bit shift register
 reg [2:0] SCKr;  always @(posedge clk) SCKr <= {SCKr[1:0], SCK};
 wire SCK_risingedge = (SCKr[2:1]==2'b01);  // now we can detect SCK rising edges
@@ -51,20 +62,15 @@ reg [7:0] byte_data_sent;
 always @(posedge clk)
 if(SSEL_active)
 begin
-    if(SSEL_startmessage)
-        byte_data_sent <= 8'h00;  // first byte sent in a message is the message count
-    else
-    if (byte_received)
-    begin
-      if (byte_data_received == 8'h05)
-        byte_data_sent <= 8'h0A;
-      else
-        byte_data_sent <= byte_data_received;
-    end
-    else if (SCK_fallingedge)
-    begin
-      byte_data_sent <= byte_data_received;
-    end
+  if(SSEL_startmessage)
+    byte_data_sent <= 8'h00;  // first byte sent in a message is the message count
+  else
+  if(SCK_fallingedge)
+      byte_data_sent <= 8'h00;  // after that, we send 0s
+  //else begin
+  //      byte_data_sent <= byte_data_received;
+  //  end
+      //byte_data_sent <= {byte_data_sent[6:0], 1'b0}; // 8'h05;
 end
 
 assign MISO = byte_data_sent[7];  // send MSB first
