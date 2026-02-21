@@ -6,15 +6,15 @@ output MISO;
 
 output LED;
 
-reg valid_out;
-char_automaton automat (
-    .clk(clk),
-    .rst_n(~SSEL_active),
-    .valid_in(byte_received),
-    .char_in(byte_data_received),
-    .valid_out(valid_out),
-    .char_out(byte_data_sent)
-);
+//reg valid_out;
+//char_automaton automat (
+//    .clk(clk),
+//    .rst_n(~SSEL_active),
+//    .valid_in(byte_received),
+//    .char_in(byte_data_received),
+//    .valid_out(valid_out),
+//    .char_out(byte_data_sent)
+//);
 
 // sync SCK to the FPGA clock using a 3-bit shift register
 reg [2:0] SCKr;  always @(posedge clk) SCKr <= {SCKr[1:0], SCK};
