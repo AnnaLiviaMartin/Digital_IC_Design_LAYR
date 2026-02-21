@@ -1,8 +1,9 @@
-module SPI_slave(clk, SCK, MOSI, MISO, SSEL, LED);
+module SPI_slave(clk, SCK, MOSI, MISO, SSEL, LED, state, next_state);
 input clk;
 
 input SCK, SSEL, MOSI;
 output MISO;
+output logic [1:0] state, next_state;
 
 output LED;
 
@@ -59,7 +60,7 @@ reg [7:0] byte_data_sent;
 localparam IDLE = 8'h00;
 localparam CHECK_BYTE = 8'h01;
 localparam SEND_RESPONSE = 8'h02;
-reg [1:0] state, next_state;
+//reg [1:0] state, next_state;
 logic [7:0] response_byte;
 
 always_ff @(posedge clk) begin
