@@ -3,10 +3,10 @@ module top (
   input  logic spi_sclk,
   input  logic spi_cs_0,    // SSEL = spi_cs_0 (Haupt-CS)
   input  logic spi_mosi,
-  output wire spi_miso
+  output wire spi_miso,
   output logic led,
   output logic state,
-  output logic next_state;
+  output logic next_state
 );
 
   SPI_slave u_spi (
