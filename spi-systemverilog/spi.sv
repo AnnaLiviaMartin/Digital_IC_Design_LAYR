@@ -56,28 +56,52 @@ reg LED;
 always @(posedge clk) if(byte_received) LED <= byte_data_received[0];
 reg [7:0] byte_data_sent;
 
-//reg [7:0] cnt;
-//always @(posedge clk) if(SSEL_startmessage) cnt<=cnt+8'h1;  // count the messages
+localparam IDLE = 8'h00;
+localparam CHECK_BYTE = 8'h01;
+localparam SEND_RESPONSE = 8'h02;
+reg [1:0] state, next_state;
+logic [7:0] response_byte;
+
+always_ff @(posedge clk) begin
+    if (!SSEL_active)
+        state <= IDLE;
+    else
+        state <= next_state;
+end
+
+always_comb begin
+    next_state = state;
+    if (state == IDLE && byte_received)
+        next_state = CHECK_BYTE;
+    else if (state == CHECK_BYTE)
+        next_state = SEND_RESPONSE;
+    else if (state == SEND_RESPONSE)
+        next_state = IDLE;
+    else
+        next_state = IDLE;
+end
+
+always_ff @(posedge clk) begin
+    if (state == CHECK_BYTE) begin
+        if (byte_data_received == 8'h03)
+            response_byte <= 8'h05;
+        else
+            response_byte <= byte_data_received;
+    end
+end
 
 always @(posedge clk)
 if(SSEL_active)
 begin
-  //if(SSEL_startmessage)
-  //  byte_data_sent <= byte_data_received;  // first byte sent in a message is the message count
-  //else
   if(SCK_fallingedge)
   begin
     if(bitcnt==3'b000)
-      byte_data_sent <= 8'h00;  // after that, we send 0s
+      byte_data_sent <= 8'h00;
     else
-      byte_data_sent <= byte_data_received;
-      //byte_data_sent <= {byte_data_sent[6:0], 1'b0};
+      byte_data_sent <= response_byte;
   end
 end
 
 assign MISO = byte_data_sent[7];  // send MSB first
-// we assume that there is only one slave on the SPI bus
-// so we don't bother with a tri-state buffer for MISO
-// otherwise we would need to tri-state MISO when SSEL is inactive
 
 endmodule
