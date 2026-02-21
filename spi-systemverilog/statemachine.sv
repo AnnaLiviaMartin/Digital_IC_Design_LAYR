@@ -16,14 +16,13 @@ module char_automaton (
     // ASCII constants
     localparam [7:0] ASCII_3 = 8'h03; // '3'
     localparam [7:0] ASCII_B = 8'h62; // 'b'
-    localparam [7:0] ASCII_C = 8'h63; // 'c'
 
     // States
     localparam [0:0] S0 = 1'b0; // only one state needed
     reg [0:0] state;
 
     always @(posedge clk) begin
-        if (!rst_n) begin
+        if (rst_n) begin
             state     <= S0;
             valid_out <= 1'b0;
             char_out  <= 8'h00;
@@ -34,7 +33,7 @@ module char_automaton (
                 if (char_in == ASCII_3)
                     char_out <= ASCII_B;  // 'a' → 'b'
                 else
-                    char_out <= ASCII_C;  // anything else → 'c'
+                    char_out <= char_in;  // anything else
             end
         end
     end

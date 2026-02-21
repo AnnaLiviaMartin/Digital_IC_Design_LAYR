@@ -9,8 +9,8 @@ output LED;
 reg valid_out;
 char_automaton automat (
     .clk(clk),
-    .rst_n(SSEL_startmessage),
-    .valid_in(SSEL_endmessage),
+    .rst_n(~SSEL_active),
+    .valid_in(byte_received),
     .char_in(byte_data_received),
     .valid_out(valid_out),
     .char_out(byte_data_sent)
