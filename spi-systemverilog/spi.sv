@@ -14,7 +14,7 @@ wire SCK_fallingedge = (SCKr[2:1]==2'b10);  // and falling edges
 
 // same thing for SSEL
 reg [2:0] SSELr;  always @(posedge clk) SSELr <= {SSELr[1:0], SSEL};
-wire SSEL_active = ~SSELr[1];  // SSEL is active low
+wire SSEL_active = ~SSELr[1];  // SSEL is active low => start bei 0
 wire SSEL_startmessage = (SSELr[2:1]==2'b10);  // message starts at falling edge
 wire SSEL_endmessage = (SSELr[2:1]==2'b01);  // message stops at rising edge
 
@@ -84,18 +84,22 @@ end */
 
 // unterer automat
 always @(posedge clk) // schnelle clk
-if(SSEL_active) // dann übertragen mit dem slave
-begin
-  if(SCK_fallingedge) // runterrechnen von clk, nur bei langsamer clk machen wir etwas
-  begin    
-    if(bitcnt==3'b000 && byte_received)
+  if (~SSEL_active)
+      byte_data_sent <= 8'h00;
+  else if (byte_received)
       byte_data_sent <= byte_data_received;
-    else if(bitcnt==3'b000)
+  else if (SCK_fallingedge) // runterrechnen von clk, nur bei langsamer clk machen wir etwas
+      byte_data_sent <= {byte_data_sent[6:0], 1'b0};
+/* if(SSEL_active) // dann übertragen mit dem slave
+begin
+  if(SCK_fallingedge) 
+  begin    
+    if(bitcnt==3'b000)
       byte_data_sent <= 8'h00;
     else
       byte_data_sent <= {byte_data_sent[6:0], 1'b0};
   end
-end
+end */
 
 assign MISO = byte_data_sent[7];  // send MSB first
 
