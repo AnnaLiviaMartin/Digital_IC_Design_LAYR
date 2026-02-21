@@ -46,48 +46,48 @@ always @(posedge clk) byte_received <= SSEL_active && SCK_risingedge && (bitcnt=
 reg LED;
 always @(posedge clk) if(byte_received) LED <= byte_data_received[0];
 reg [7:0] byte_data_sent;
-/* 
+ 
 // oberer automat
 localparam IDLE = 8'h00;
 localparam CHECK_BYTE = 8'h01;
 localparam SEND_RESPONSE = 8'h02;
-//reg [1:0] state, next_state;
+reg [1:0] state, next_state;
 logic [7:0] response_byte;
+logic response_ready; // tag
 
 always_ff @(posedge clk) begin
     if (!SSEL_active)
         state <= IDLE;
+        next_state <= IDLE;
     else
         state <= next_state;
+    
+    if (SCK_fallingedge && state == CHECK_BYTE) begin
+        /* if (byte_data_received == 8'h03)
+            response_byte <= 8'h05;
+        else */
+        response_byte <= 8'h4; //byte_data_received;
+        response_ready <= 1'b1;
+    end
 end
 
 always_comb begin
-    next_state = state;
     if (state == IDLE && byte_received)
         next_state = CHECK_BYTE;
-    else if (state == CHECK_BYTE)
+    else if (state == CHECK_BYTE && response_ready)
         next_state = SEND_RESPONSE;
-    else if (state == SEND_RESPONSE)
+    else if (state == SEND_RESPONSE && bitcnt == 3'b111)
         next_state = IDLE;
     else
         next_state = IDLE;
 end
-//   if(SCK_fallingedge)
-always_ff @(posedge clk) begin
-    if (state == CHECK_BYTE) begin
-        if (byte_data_received == 8'h03)
-            response_byte <= 8'h05;
-        else
-            response_byte <= byte_data_received;
-    end
-end */
 
 // unterer automat
 always @(posedge clk) // schnelle clk
   if (~SSEL_active)
       byte_data_sent <= 8'h00;
-  else if (byte_received)
-      byte_data_sent <= byte_data_received;
+  else if (response_ready)
+      byte_data_sent <= response_byte;
   else if (SCK_fallingedge && bitcnt != 3'b000) // runterrechnen von clk, nur bei langsamer clk machen wir etwas
       byte_data_sent <= {byte_data_sent[6:0], 1'b0};
 
