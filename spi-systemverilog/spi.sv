@@ -62,15 +62,16 @@ reg [7:0] byte_data_sent;
 always @(posedge clk)
 if(SSEL_active)
 begin
-  if(SSEL_startmessage)
-    byte_data_sent <= byte_data_received;  // first byte sent in a message is the message count
-  else
+  //if(SSEL_startmessage)
+  //  byte_data_sent <= byte_data_received;  // first byte sent in a message is the message count
+  //else
   if(SCK_fallingedge)
   begin
     if(bitcnt==3'b000)
       byte_data_sent <= 8'h00;  // after that, we send 0s
     else
-      byte_data_sent <= {byte_data_sent[6:0], 1'b0};
+      byte_data_sent <= byte_data_received;
+      //byte_data_sent <= {byte_data_sent[6:0], 1'b0};
   end
 end
 
