@@ -64,6 +64,15 @@ always_ff @(posedge clk) begin
     end
     else
         state <= next_state;
+
+    if (state == IDLE && byte_received)
+        next_state <= CHECK_BYTE;
+    else if (state == CHECK_BYTE && response_ready)
+        next_state <= SEND_RESPONSE;
+    else if (state == SEND_RESPONSE && bitcnt == 3'b111)
+        next_state <= IDLE;
+    else
+        next_state <= IDLE;
     
     if (SCK_fallingedge && state == CHECK_BYTE) begin
         /* if (byte_data_received == 8'h03)
@@ -72,17 +81,6 @@ always_ff @(posedge clk) begin
         response_byte <= 8'h4; //byte_data_received;
         response_ready <= 1'b1;
     end
-end
-
-always_comb begin
-    if (state == IDLE && byte_received)
-        next_state = CHECK_BYTE;
-    else if (state == CHECK_BYTE && response_ready)
-        next_state = SEND_RESPONSE;
-    else if (state == SEND_RESPONSE && bitcnt == 3'b111)
-        next_state = IDLE;
-    else
-        next_state = IDLE;
 end
 
 // unterer automat
