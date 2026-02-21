@@ -59,8 +59,6 @@ always_ff @(posedge clk) begin
     if (!SSEL_active) begin
         state <= IDLE;
         next_state <= IDLE;
-        response_ready <= 1'b0;
-        response_byte <= 8'h00;
     end
     else
         state <= next_state;
@@ -75,8 +73,11 @@ always_ff @(posedge clk) begin
 end
 
 always_comb begin
-    if (state == IDLE && byte_received)
+    if (state == IDLE && byte_received) begin
         next_state = CHECK_BYTE;
+        response_ready = 1'b0;
+        response_byte = 8'h00;
+    end
     else if (state == CHECK_BYTE && response_ready)
         next_state = SEND_RESPONSE;
     else if (state == SEND_RESPONSE && bitcnt == 3'b111)
@@ -90,7 +91,7 @@ always @(posedge clk) // schnelle clk
   if (~SSEL_active)
       byte_data_sent <= 8'h00;
   else if (response_ready)
-      byte_data_sent <= byte_data_received;
+      byte_data_sent <= response_byte;
   else if (SCK_fallingedge && bitcnt != 3'b000) // runterrechnen von clk, nur bei langsamer clk machen wir etwas
       byte_data_sent <= {byte_data_sent[6:0], 1'b0};
 
