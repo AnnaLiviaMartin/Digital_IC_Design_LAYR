@@ -4,9 +4,7 @@ module top (
   input  logic spi_cs_0,    // SSEL = spi_cs_0 (Haupt-CS)
   input  logic spi_mosi,
   output wire spi_miso,
-  output logic led,
-  output logic state,
-  output logic next_state
+  output logic led
 );
 
   SPI_slave u_spi (
@@ -15,9 +13,7 @@ module top (
     .SSEL (spi_cs_0),
     .MOSI (spi_mosi),
     .MISO (spi_miso),
-    .LED  (led),
-    .state(state),
-    .next_state(next_state)
+    .LED  (led)
   );
 
 endmodule

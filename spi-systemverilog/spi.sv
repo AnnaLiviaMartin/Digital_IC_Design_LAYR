@@ -1,9 +1,8 @@
-module SPI_slave(clk, SCK, MOSI, MISO, SSEL, LED, state, next_state);
+module SPI_slave(clk, SCK, MOSI, MISO, SSEL, LED);
 input clk;
 
 input SCK, SSEL, MOSI;
 output MISO;
-output logic [1:0] state, next_state;
 
 output LED;
 
