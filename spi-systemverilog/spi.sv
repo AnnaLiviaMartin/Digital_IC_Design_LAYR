@@ -86,12 +86,11 @@ end */
 always @(posedge clk) // schnelle clk
 if(SSEL_active) // dann übertragen mit dem slave
 begin
-  if(byte_received) // wenn byte empfangen, dann laden
-    byte_data_sent <= byte_data_received;
-
   if(SCK_fallingedge) // runterrechnen von clk, nur bei langsamer clk machen wir etwas
   begin    
-    if(bitcnt==3'b000)
+    if(bitcnt==3'b000 && byte_received)
+      byte_data_sent <= byte_data_received;
+    else if(bitcnt==3'b000)
       byte_data_sent <= 8'h00;
     else
       byte_data_sent <= {byte_data_sent[6:0], 1'b0};
