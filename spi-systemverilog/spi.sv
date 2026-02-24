@@ -70,8 +70,6 @@ always_ff @(posedge clk) begin
         next_state <= SEND_RESPONSE;
     else if (state == SEND_RESPONSE && bitcnt == 3'b111)
         next_state <= IDLE;
-    else
-        next_state <= IDLE;
     
     if (SCK_fallingedge && state == CHECK_BYTE) begin
         /* if (byte_data_received == 8'h03)
