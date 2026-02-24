@@ -86,9 +86,10 @@ end
 always @(posedge clk) // schnelle clk
   if (~SSEL_active)
       byte_data_sent <= 8'h00;
-  else if (response_ready)
+  else if (response_ready) begin
       byte_data_sent <= response_byte;
       response_send <= 1'b1;
+  end
   else if (SCK_fallingedge && bitcnt != 3'b000) // runterrechnen von clk, nur bei langsamer clk machen wir etwas
       byte_data_sent <= {byte_data_sent[6:0], 1'b0};
 
