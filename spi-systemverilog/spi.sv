@@ -1,10 +1,10 @@
-module SPI_slave(clk, SCK, MOSI, MISO, SSEL, LED);
+module SPI_slave(clk, SCK, MOSI, MISO, SSEL, LEDS);
 input clk;
 
 input SCK, SSEL, MOSI;
 output MISO;
 
-output LED;
+output logic [7 : 0] LEDS;
 
 // sync SCK to the FPGA clock using a 3-bit shift register
 reg [2:0] SCKr;  always @(posedge clk) SCKr <= {SCKr[1:0], SCK};
@@ -25,6 +25,16 @@ reg [2:0] bitcnt;
 
 reg byte_received;  // high when a byte has been received
 reg [7:0] byte_data_received;
+reg [7:0] byte_data_sent;
+
+// oberer automat
+localparam IDLE = 8'h00;
+localparam CHECK_BYTE = 8'h01;
+localparam SEND_RESPONSE = 8'h02;
+logic [7:0] state, next_state;
+reg [7:0] response_byte;
+logic [0:0] response_ready; // tag
+logic [0:0] response_sent;
 
 always @(posedge clk)
 begin
@@ -42,18 +52,28 @@ end
 always @(posedge clk) byte_received <= SSEL_active && SCK_risingedge && (bitcnt==3'b111);
 
 // we use the LSB of the data received to control an LED
-reg LED;
-always @(posedge clk) if(byte_received) LED <= byte_data_received[0];
-reg [7:0] byte_data_sent;
- 
-// oberer automat
-localparam IDLE = 8'h00;
-localparam CHECK_BYTE = 8'h01;
-localparam SEND_RESPONSE = 8'h02;
-logic [1:0] state, next_state;
-logic [7:0] response_byte;
-logic [0:0] response_ready; // tag
-logic [0:0] response_send; // tag
+//reg LED;
+
+initial begin
+  LEDS <= 8'b00000000;
+end
+
+always @(posedge clk) begin
+  LEDS[7] <= 1;
+
+  if(byte_received)
+    LEDS[6] <= 1;
+  
+  if (state == SEND_RESPONSE)
+    LEDS[2] <= 1;
+  
+  if (state == CHECK_BYTE)
+    LEDS[1] <= 1;
+
+  if (state == IDLE)
+    LEDS[0] <= 1;
+    
+end
 
 always_ff @(posedge clk) begin
     if (!SSEL_active) begin
@@ -61,23 +81,26 @@ always_ff @(posedge clk) begin
         next_state <= IDLE;
         response_ready <= 1'b0;
         response_byte <= 8'h00;
-        response_send <= 1'b0;
+        response_sent <= 1'b0;
     end
     else
         state <= next_state;
 
-    if (state == IDLE && byte_received)
+    if (state == IDLE && byte_received) begin
         next_state <= CHECK_BYTE;
+        received_bytes <= byte_data_received;
+    end
     else if (state == CHECK_BYTE && response_ready)
         next_state <= SEND_RESPONSE;
-    else if (state == SEND_RESPONSE && bitcnt == 3'b111 && response_send)
+    else if (state == SEND_RESPONSE && bitcnt == 3'b111 && response_sent)
         next_state <= IDLE;
     
     if (SCK_fallingedge && state == CHECK_BYTE) begin
-        /* if (byte_data_received == 8'h03)
-            response_byte <= 8'h05;
-        else */
-        response_byte <= 8'h4; //byte_data_received;
+        //if (received_bytes == 8'h03)
+        //  response_byte <= 8'h05;
+        //else
+          //response_byte <= received_bytes; //byte_data_received;
+        response_byte <= 8'h4;
         response_ready <= 1'b1;
     end
 end
@@ -86,12 +109,15 @@ end
 always @(posedge clk) // schnelle clk
   if (~SSEL_active)
       byte_data_sent <= 8'h00;
-  else if (response_ready) begin
-      byte_data_sent <= response_byte;
-      response_send <= 1'b1;
+  else if (SCK_fallingedge) begin
+      if (bitcnt != 3'b000) begin // runterrechnen von clk, nur bei langsamer clk machen wir etwas
+        byte_data_sent <= {byte_data_sent[6:0], 1'b0};
+      end
+      else if (response_ready) begin
+        byte_data_sent <= response_byte;
+        response_sent <= 1'b1;
+      end
   end
-  else if (SCK_fallingedge && bitcnt != 3'b000) // runterrechnen von clk, nur bei langsamer clk machen wir etwas
-      byte_data_sent <= {byte_data_sent[6:0], 1'b0};
 
 assign MISO = byte_data_sent[7];  // send MSB first
 
