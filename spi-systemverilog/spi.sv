@@ -50,7 +50,7 @@ reg [7:0] byte_data_sent;
 localparam IDLE = 8'h00;
 localparam CHECK_BYTE = 8'h01;
 localparam SEND_RESPONSE = 8'h02;
-reg [1:0] state, next_state;
+logic [1:0] state, next_state;
 logic [7:0] response_byte;
 logic [0:0] response_ready; // tag
 
@@ -86,7 +86,7 @@ end
 always @(posedge clk) // schnelle clk
   if (~SSEL_active)
       byte_data_sent <= 8'h00;
-  else if (response_ready)
+  else if (byte_received)
       byte_data_sent <= byte_data_received;
   else if (SCK_fallingedge && bitcnt != 3'b000) // runterrechnen von clk, nur bei langsamer clk machen wir etwas
       byte_data_sent <= {byte_data_sent[6:0], 1'b0};
