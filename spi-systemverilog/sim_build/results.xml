@@ -1,0 +1,8 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1772032309" />
+    <testcase name="test_spi_response" classname="test_spi" file="/Users/davidrossel/Documents/Uni/Chipdesign/Chipdesign-code/Digital_IC_Design_LAYR/spi-systemverilog/test_spi.py" lineno="27" time="0.003657102584838867" sim_time_ns="7160.0" ratio_time="1957834.0595866744">
+      <failure error_type="AssertionError" error_msg="Expected 0x04, got 0x00&#10;assert 0 == 4" />
+    </testcase>
+  </testsuite>
+</testsuites>
