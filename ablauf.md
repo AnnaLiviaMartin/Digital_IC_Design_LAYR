@@ -430,3 +430,46 @@ assign MISO = byte_data_sent[7];  // send MSB first
 
 endmodule
 '''
+
+## Was wir gemacht haben um bis hierher die Probleme zu lösen:
+Dokumentation der Fehleranalyse und Qualitätssicherung
+Um die Funktionalität des Systems sicherzustellen und Fehler in der Kommunikation sowie im Programmablauf zu isolieren, wurden folgende Maßnahmen ergriffen:
+
+1. Hardware-Analyse via Logic Analyzer
+Die primäre Überprüfung der Datenübertragung erfolgte über einen Logic Analyzer, der zwischen dem Python-Interface und dem Lattice-Board geschaltet wurde.
+Fokus: Überwachung der SPI-Kommunikation (MISO und MOSI).
+Ziel: Verifikation, ob die gesendeten Befehle korrekt ankommen und die erwarteten Antworten zurückgegeben werden. Dies diente als Referenzwert, um den Erfolg oder Misserfolg einzelner Operationen zweifelsfrei festzustellen.
+
+2. Visuelles Debugging über On-Board LEDs
+Für die Echtzeit-Überprüfung des Programmflusses auf dem Lattice-Board wurden die integrierten Leuchtdioden (LEDs) als Statusindikatoren genutzt:
+Code-Abdeckung: Signalisierung, ob bestimmte Code-Abschnitte (Trigger-Punkte) erreicht wurden.
+Logik-Prüfung: Verifikation der „Zeitmaschine“ (Timing-Logik) sowie die Bestätigung, ob Datenregister korrekt befüllt wurden.
+
+3. Datenverwaltung in Registern
+Zur strukturierten Verarbeitung der Informationen wurde das System mit mehreren 8-Bit-Registern ausgestattet. Diese dienten als Zwischenspeicher, um die Integrität der Daten während der Verarbeitungsschritte zu wahren und kontrollierbar zu machen.
+
+4. Simulation (Optionaler Ansatz)
+Es wurde zusätzlich eine Simulation erstellt, um den Code vorab zu testen.
+Ergebnis: Dieser Ansatz lieferte in diesem spezifischen Fall nur begrenzten Mehrwert, da die Komplexität der Handhabung den direkten Test auf der Hardware weniger effektiv unterstützte als die Live-Analyse.
+Erweiterte Strategien zur Fehlerbehebung
+Wenn die automatisierten oder visuellen Tests (Simulation & LEDs) keine eindeutigen Ergebnisse lieferten, wurde auf eine intensive manuelle Analyse umgestellt:
+
+5. Intensives Team-Review (Code-Walkthrough)
+Als finale Instanz der Fehlersuche wurde eine detaillierte Code-Analyse im Drei-Augen-Prinzip durchgeführt.
+
+Methodik: Gemeinsames Durchgehen jeder einzelnen Codezeile im Team.
+Zielsetzung: * Logikfehler aufspüren, die in der Simulation nicht offensichtlich waren.
+Hypothesen bilden: „Was passiert hier genau?“ vs. „Was sollte hier eigentlich nicht passieren?“
+Abgleich der geschriebenen Logik mit den Hardware-Spezifikationen des Lattice-Boards.
+
+Fallbeispiel: Fehler in der „Zeitmaschine“ (FSM)
+Ein konkreter Erfolg dieser Methode war die Korrektur der Zustandssteuerung (Finite State Machine).
+Das Problem: Ein logischer Fehler in einer if-else-Struktur verhinderte den korrekten Ablauf der Zustände.
+Die Ursache: Ein zu breit gefasster else-Zweig führte dazu, dass das System bei jeder kleinsten Nichterfüllung einer Bedingung sofort in den IDLE-State zurücksprang.
+Die Folge: Der Übergang von Zustand 2 zu Zustand 3 schlug fehl, da das System „voreilig“ zurückgesetzt wurde, bevor die Sequenz abgeschlossen war.
+Die Lösung: Durch das logische „Durchspielen“ der Bedingungen im Team konnten wir diesen strukturellen Fehler identifizieren und die else-Bedingungen präzisieren, sodass die Zustandsübergänge stabil blieben.
+
+Vorteile dieser Arbeitsweise
+Schnelle Identifikation: „Einfache“, aber folgenschwere Fehler (wie der Idle-Sprung) wurden sofort sichtbar.
+Logik-Check: Komplexe Abhängigkeiten konnten Schritt für Schritt im Kopf (oder am Whiteboard) simuliert werden, was flexibler war als die starre Software-Simulation.
+Lerneffekt: Das gesamte Team entwickelte ein einheitliches Verständnis für die Funktionsweise der 8-Bit-Register und der Zeitsteuerung.
