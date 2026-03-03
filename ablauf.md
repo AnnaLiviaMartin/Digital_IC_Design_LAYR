@@ -473,3 +473,7 @@ Vorteile dieser Arbeitsweise
 Schnelle Identifikation: „Einfache“, aber folgenschwere Fehler (wie der Idle-Sprung) wurden sofort sichtbar.
 Logik-Check: Komplexe Abhängigkeiten konnten Schritt für Schritt im Kopf (oder am Whiteboard) simuliert werden, was flexibler war als die starre Software-Simulation.
 Lerneffekt: Das gesamte Team entwickelte ein einheitliches Verständnis für die Funktionsweise der 8-Bit-Register und der Zeitsteuerung.
+
+
+## Versuch 256 Bit zu übertragen
+Uns war nicht bewusst dass wior 32 mal mit dem master eine 1 schicken müssen, damit alle 256 Bit übertragen werden. Als wir dass dann verstanden hatte, konnten wir alles übertragen, wir haben dafür noch eine statemachine gebaut, die nun das challenge-response-system abbildet. wir sind aber erstmal im ersten übertragungsschritt gewesen wo zuerst die challenge übertragen wird (also die 256 bit). hier haben wir zuerst nur immer eine 0 und dann ein bit des 256 bit bekommen und dann wieder eine 0 mit neuem bit. das lag aber wie gesagt daran dass unser test sktipt bei python auch immer nur 2x pro ablauf eine 1 gesendet hat

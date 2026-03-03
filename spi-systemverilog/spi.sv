@@ -30,6 +30,26 @@ reg [7:0] byte_data_received;
 reg [7:0] byte_data_sent;
 reg [7:0] byte_data_received_backup;
 
+// challenge response
+localparam PAYLOAD_LENGTH = 256;
+
+reg [PAYLOAD_LENGTH - 1 : 0] input_payload, output_payload;
+reg [7:0] input_payload_index;
+reg [7:0] output_payload_index;
+
+reg is_receiving_payload;
+reg is_sending_payload;
+
+reg sent_payload;
+reg received_payload;
+
+localparam REQUEST_OPEN = 8'h01;
+localparam CHALLENGE = 8'h02;
+localparam CHALLENGE_ANSWER = 8'h03;
+localparam GRANT_ACCESS = 8'h04;
+localparam DENY_ACCESS = 8'h05;
+localparam ERROR = 8'h06;
+
 // oberer automat
 localparam IDLE = 8'h00;
 localparam CHECK_BYTE = 8'h01;
@@ -41,7 +61,7 @@ logic response_sent;
 
 always @(posedge clk)
 begin
-  if(~SSEL_active)
+  if(!SSEL_active)
     bitcnt <= 3'b000;
   else
   if(SCK_risingedge)
@@ -52,8 +72,6 @@ begin
 
     if (bitcnt == 3'b111) begin
       byte_data_received_backup <= {byte_data_received[6:0], MOSI_data};
-      LEDS[4] <= LEDS[5] == 1;
-      LEDS[5] <= 1;
     end
   end
 end
@@ -83,44 +101,104 @@ always @(posedge clk) begin
 end
 
 always_ff @(posedge clk) begin
-    if (!SSEL_active) begin
-        state <= IDLE;
-        next_state <= IDLE;
-        response_ready <= 1'b0;
-        response_sent <= 1'b0;
-    end
-    else
-        state <= next_state;
+  if (!SSEL_active) begin
+    state <= IDLE;
+    next_state <= IDLE;
+    response_ready <= 1'b0;
+    response_sent <= 1'b0;
 
-    if (state == IDLE && byte_received) begin
-        next_state <= CHECK_BYTE;
-        response_ready <= 1'b0;
-        response_sent  <= 1'b0;
-    end
-    else if (state == CHECK_BYTE && response_ready)
-        next_state <= SEND_RESPONSE;
-    // FIX: In SEND_RESPONSE sofort zu CHECK_BYTE bei byte_received,
-    // OHNE auf response_sent zu warten. response_sent kommt erst beim naechsten
-    // bitcnt==0, also NACH byte_received – sie ueberlappen sich nie.
-    // Der untere Automat shiftet byte_data_sent weiterhin unabhaengig aus.
-    else if (state == SEND_RESPONSE && byte_received) begin
-        next_state <= CHECK_BYTE;
-        response_ready <= 1'b0;
-        response_sent  <= 1'b0;
-    end
-    else if (state == SEND_RESPONSE && response_sent)
-        next_state <= IDLE;
+    //is_receiving_payload <= 1'b0;
+    //is_sending_payload <= 1'b0;
     
-    if (SCK_fallingedge && state == CHECK_BYTE) begin
-        if (byte_data_received_backup == 8'h3)
-          response_byte <= 8'h2;
-        else
-          response_byte <= 8'h4;
-        response_ready <= 1'b1;
-    end
+    /*
+    if (!is_receiving_payload)
+      input_payload_index <= 8'b0;
 
-    if (SCK_fallingedge && state == SEND_RESPONSE && bitcnt == 3'b000 && response_ready)
-        response_sent <= 1'b1;
+    if (!is_sending_payload)
+      output_payload_index <= 8'b0;
+    */
+    
+    sent_payload <= 1'b0;
+    received_payload <= 1'b0;
+  end
+  else
+    state <= next_state;
+
+  if (state == IDLE && byte_received) begin
+    next_state <= CHECK_BYTE;
+    response_ready <= 1'b0;
+    response_sent  <= 1'b0;
+  end
+  else if (state == CHECK_BYTE && response_ready)
+    next_state <= SEND_RESPONSE;
+  // FIX: In SEND_RESPONSE sofort zu CHECK_BYTE bei byte_received,
+  // OHNE auf response_sent zu warten. response_sent kommt erst beim naechsten
+  // bitcnt==0, also NACH byte_received – sie ueberlappen sich nie.
+  // Der untere Automat shiftet byte_data_sent weiterhin unabhaengig aus.
+  else if (state == SEND_RESPONSE && byte_received) begin
+    next_state <= CHECK_BYTE;
+    response_ready <= 1'b0;
+    response_sent  <= 1'b0;
+  end
+  else if (state == SEND_RESPONSE && response_sent)
+    next_state <= IDLE;
+  
+  if (SCK_fallingedge && state == CHECK_BYTE) begin
+    case (byte_data_received_backup)
+      REQUEST_OPEN: begin
+        LEDS[5] <= 1;
+        response_byte <= CHALLENGE;
+        response_ready <= 1'b1;
+        //output_payload <= 256'hFF;
+        output_payload <= 256'hAABBCCFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF99FF112233;
+        is_sending_payload <= 1'b1;
+      end
+      CHALLENGE: begin
+        response_byte <= CHALLENGE_ANSWER;
+        is_receiving_payload <= 1'b1;
+        //is_sending_payload <= 1'b1;
+        //response_ready <= 1'b1;
+      end
+      CHALLENGE_ANSWER: begin
+        
+        is_receiving_payload <= 1'b1;
+        //response_byte <= DENY_ACCESS;
+        if (received_payload) begin
+          response_byte <= GRANT_ACCESS;
+          response_ready <= 1'b1;
+        end
+        //response_ready <= 1'b1;
+      end
+      GRANT_ACCESS: begin
+        state <= IDLE;
+      end
+      DENY_ACCESS: begin
+        state <= IDLE;
+      end
+      ERROR: begin
+        response_byte <= ERROR;
+        response_ready <= 1'b1;
+      end
+      default: begin
+        response_byte <= 8'h06;
+        response_ready <= 1'b1;
+      end
+    endcase
+  end
+
+  if (is_receiving_payload) begin
+    input_payload[7 + input_payload_index * 8 : input_payload_index * 8] <= byte_data_received_backup;
+    input_payload_index <= input_payload_index + 1;
+    if (7 + input_payload_index * 8 >= PAYLOAD_LENGTH) begin
+      is_receiving_payload <= 1'b0;
+      received_payload <= 1'b1;
+      input_payload_index <= 8'b0;
+    end
+  end
+
+  if (SCK_fallingedge && state == SEND_RESPONSE && bitcnt == 3'b000 && response_ready) begin
+    response_sent <= 1'b1;
+  end
 end
 
 // unterer automat
@@ -134,10 +212,23 @@ always @(posedge clk) // schnelle clk
       // FIX: byte_data_sent direkt in CHECK_BYTE laden (gleiche Flanke wie Berechnung).
       // response_byte ist wegen non-blocking noch nicht aktuell -> Logik dupliziert.
       else if (state == CHECK_BYTE) begin
+        if (is_sending_payload) begin
+          byte_data_sent <= output_payload[7 + output_payload_index * 8 : output_payload_index * 8];
+          output_payload_index <= output_payload_index + 1;
+          if (7 + output_payload_index * 8 >= PAYLOAD_LENGTH) begin
+            is_sending_payload <= 1'b0;
+            sent_payload <= 1'b1;
+            output_payload_index <= 8'b0;
+          end
+        end
+        else
+          byte_data_sent <= response_byte;
+        /*
         if (byte_data_received_backup == 8'h3)
           byte_data_sent <= 8'h2;
         else
           byte_data_sent <= byte_data_received_backup;
+        */
       end
   end
 
