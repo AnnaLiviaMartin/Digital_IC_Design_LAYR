@@ -86,6 +86,7 @@ end
 always @(posedge clk) begin
   LEDS[7] <= 1;
 
+  /*
   if (byte_received)
     LEDS[6] <= 1;
   
@@ -97,7 +98,8 @@ always @(posedge clk) begin
 
   if (state == IDLE)
     LEDS[0] <= 1;
-    
+  */
+
 end
 
 always_ff @(posedge clk) begin
@@ -123,10 +125,13 @@ always_ff @(posedge clk) begin
   else if (state == SEND_RESPONSE && response_sent)
     next_state <= IDLE;
   
-  if (state == CHECK_BYTE) begin
+  if (state == CHECK_BYTE && !is_receiving_payload) begin
     case (byte_data_received_backup)
+      0: begin
+        response_ready <= 1'b1;
+        is_sending_payload <= 1'b1;
+      end
       REQUEST_OPEN: begin
-        LEDS[5] <= 1;
         response_byte <= CHALLENGE;
         response_ready <= 1'b1;
         output_payload <= 256'h112233445566778899AABBCCDDEEFF_0102030405060708090A0B0C0D0E0F_1A1B;
@@ -138,15 +143,17 @@ always_ff @(posedge clk) begin
           is_receiving_payload <= 1'b1;
         else
           is_sending_payload <= 1'b1;
+        
         //response_ready <= 1'b1;
       end
       CHALLENGE_ANSWER: begin
-        
         is_receiving_payload <= 1'b1;
         //response_byte <= DENY_ACCESS;
         if (received_payload) begin
           response_byte <= GRANT_ACCESS;
           response_ready <= 1'b1;
+          //is_receiving_payload <= 1'b0;
+          is_sending_payload <= 1'b1;
         end
         //response_ready <= 1'b1;
       end
@@ -166,18 +173,20 @@ always_ff @(posedge clk) begin
       end
     endcase
   end
-
-  /* 
-  if (is_receiving_payload) begin
-    input_payload[7 + input_payload_index * 8 : input_payload_index * 8] <= byte_data_received_backup;
+  
+  if (is_receiving_payload && byte_received) begin
+    input_payload[PAYLOAD_LENGTH - 1 - input_payload_index * 8 : PAYLOAD_LENGTH - 1 - input_payload_index * 8 - 7] <= byte_data_received_backup;
     input_payload_index <= input_payload_index + 1;
     if (7 + input_payload_index * 8 >= PAYLOAD_LENGTH) begin
       is_receiving_payload <= 1'b0;
       received_payload <= 1'b1;
       input_payload_index <= 8'b0;
+      //output_payload <= input_payload;
+
+      if (input_payload == 256'h0102030405060708090102030405060708090102030405060708090A0B0C0D0E)
+        LEDS[5] <= 1;
     end
   end
-  */
 
   if (SCK_fallingedge && state == SEND_RESPONSE && bitcnt == 3'b000 && response_ready) begin
     response_sent <= 1'b1;
@@ -185,27 +194,28 @@ always_ff @(posedge clk) begin
 end
 
 // unterer automat
-always @(posedge clk)
+always @(posedge clk) // schnelle clk
   if (!SSEL_active)
     byte_data_sent <= 8'h00;
   else if (SCK_fallingedge) begin
-    if (bitcnt != 3'b000)
+    if (bitcnt != 3'b000) begin // runterrechnen von clk, nur bei langsamer clk machen wir etwas
       byte_data_sent <= {byte_data_sent[6:0], 1'b0};
-
-    // NUR einmal pro Byte laden — wenn bitcnt gerade auf 0 zurückgefallen ist
-    if (state == SEND_RESPONSE && bitcnt == 3'b000) begin
+    end
+    
+    if (state == SEND_RESPONSE) begin
       if (is_sending_payload) begin
-        byte_data_sent <= output_payload[7 + output_payload_index * 8 -: 8];
+        byte_data_sent <= output_payload[7 + output_payload_index * 8 : output_payload_index * 8];
         output_payload_index <= output_payload_index + 1;
-        if (output_payload_index == (PAYLOAD_LENGTH/8 - 1)) begin
+        if (7 + output_payload_index * 8 >= PAYLOAD_LENGTH) begin
           is_sending_payload <= 1'b0;
           sent_payload <= 1'b1;
           output_payload_index <= 8'b0;
         end
-      end else
-        byte_data_sent <= response_byte;
+      end
+      else
+        byte_data_sent <= 8'h10;
     end
-end
+  end
 
 assign MISO = byte_data_sent[7];  // send MSB first
 
