@@ -30,6 +30,39 @@ reg [7:0] byte_data_received;
 reg [7:0] byte_data_sent;
 reg [7:0] byte_data_received_backup;
 
+// ascon
+
+logic [63:0] ascon_msg_in;
+logic [0:255] ascon_hash_out;
+wire ascon_hash_ready;
+
+logic ascon_rst_n;
+logic ascon_msg_start;
+logic ascon_msg_last;
+
+reg is_resetting_ascon;
+reg resetted_ascon;
+
+ascon_statmachine_top ascon (
+  .clk(clk),
+  .rst_n(ascon_rst_n),
+  .msg_in(ascon_msg_in),
+  .msg_start(ascon_msg_start),
+  .msg_last(ascon_msg_last),
+  .hash_out(ascon_hash_out),
+  .hash_ready(ascon_hash_ready)
+);
+
+/*
+logic clk,
+logic rst_n,
+logic [63:0] msg_in,
+input logic msg_start,
+input logic msg_last,
+output logic [0:255] hash_out,
+output wire hash_ready
+*/
+
 // challenge response
 localparam PAYLOAD_LENGTH = 256;
 
@@ -49,6 +82,9 @@ localparam CHALLENGE_ANSWER = 8'h03;
 localparam GRANT_ACCESS = 8'h04;
 localparam DENY_ACCESS = 8'h05;
 localparam ERROR = 8'h06;
+
+reg [63 : 0] secret_key = 64'b1010101010101010101010101010101010101010101010101010101010101010;
+reg [255 : 0] challenge_result;
 
 // random number generator
 
@@ -91,7 +127,10 @@ always @(posedge clk) byte_received <= SSEL_active && SCK_risingedge && (bitcnt=
 initial begin
   LEDS <= 8'b00000000;
   response_byte <= 8'h00;
-end  
+  ascon_msg_start <= 1'b0;
+  ascon_msg_last <= 1'b0;
+  ascon_rst_n <= 1'b0;
+end
 
 always_ff @(posedge clk) begin
   LEDS[7] <= 1;
@@ -116,7 +155,49 @@ always_ff @(posedge clk) begin
     next_state <= SEND_RESPONSE;
   else if (state == SEND_RESPONSE && response_sent)
     next_state <= IDLE;
-  
+
+  if (is_resetting_ascon) begin
+    if (!ascon_rst_n) begin
+      ascon_rst_n <= 1'b1;
+      LEDS[1] <= 1;
+    end
+    else begin
+      //ascon_rst_n <= 1'b0;
+      resetted_ascon <= 1'b1;
+      is_resetting_ascon <= 1'b0;
+      LEDS[2] <= 1;
+    end
+  end
+
+  if (resetted_ascon) begin
+    //ascon_msg_start <= 1'b1;
+    //ascon_msg_last <= 1'b1;
+    //resetted_ascon <= 1'b0;
+    ascon_msg_in <= 64'hFFFFFFFFFFFFFFFF;
+    
+    if (!ascon_msg_last && !ascon_msg_start) begin
+      ascon_msg_start <= 1'b1;
+      LEDS[3] <= 1;
+    end
+    else if (ascon_msg_start) begin
+      ascon_msg_last <= 1'b1;
+      ascon_msg_start <= 1'b0;
+      LEDS[4] <= 1;
+    end else begin
+      resetted_ascon <= 1'b0;
+      LEDS[5] <= 1;
+    end
+  end
+
+  if (ascon_hash_ready) begin
+    ascon_msg_last <= 1'b0;
+    nonce <= ascon_hash_out;
+    output_payload <= ascon_hash_out;
+    response_ready <= 1'b1;
+    is_sending_payload <= 1'b1;
+    LEDS[6] <= 1;
+  end
+
   if (state == CHECK_BYTE && !is_receiving_payload) begin
     case (byte_data_received_backup)
       0: begin
@@ -125,11 +206,15 @@ always_ff @(posedge clk) begin
       end
       REQUEST_OPEN: begin
         response_byte <= CHALLENGE;
-        response_ready <= 1'b1;
+
+        is_resetting_ascon <= 1'b1;
+
+        /*response_ready <= 1'b1;
         //output_payload <= 256'h112233445566778899AABBCCDDEEFF_0102030405060708090A0B0C0D0E0F_1A1B;
         nonce <= random_number_output;
         output_payload <= random_number_output;
         is_sending_payload <= 1'b1;
+        */
         LEDS[0] <= 1;
       end
       CHALLENGE: begin
@@ -140,7 +225,6 @@ always_ff @(posedge clk) begin
           is_sending_payload <= 1'b1;
         
         //response_ready <= 1'b1;
-        LEDS[1] <= 1;
       end
       CHALLENGE_ANSWER: begin
         is_receiving_payload <= 1'b1;
@@ -152,20 +236,16 @@ always_ff @(posedge clk) begin
           is_sending_payload <= 1'b1;
         end
         //response_ready <= 1'b1;
-        LEDS[2] <= 1;
       end
       GRANT_ACCESS: begin
         state <= IDLE;
-        LEDS[3] <= 1;
       end
       DENY_ACCESS: begin
         state <= IDLE;
-        LEDS[4] <= 1;
       end
       ERROR: begin
         response_byte <= ERROR;
         response_ready <= 1'b1;
-        LEDS[5] <= 1;
       end
       default: begin
         response_byte <= 8'h06;
@@ -183,11 +263,6 @@ always_ff @(posedge clk) begin
       received_payload <= 1'b1;
       input_payload_index <= 8'b0;
       //output_payload <= input_payload;
-
-      if (input_payload == nonce)
-        LEDS[6] <= 1;
-      //if (input_payload == 256'h0102030405060708090102030405060708090102030405060708090A0B0C0D0E)
-      //  LEDS[6] <= 1;
     end
   end
 
