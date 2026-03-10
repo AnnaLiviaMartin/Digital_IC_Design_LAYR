@@ -490,3 +490,7 @@ Wir haben dann den rng eingebunden. Der wird nach dem initialen Anfragen geholt 
 Sonst noch zu erklären: Protokoll (fängt mit 1 oder 3 an und dann folgenden Zahlen), Bitübertragungsschicht ist drim aber die Sicherungsschicht lassen wir weg
 
 dann haben wir versucht ascon einzubinden und zwar statt dem rng um verifizieren zu können dass unsere python bib den gleichen hash ausgibt wie das system verilog modul. dafür mussten wir eine reste logic einfügen, bei der wir 2x daten eingefügt haben (und zwar immer 0xFF um die gleiche nonce zu nutzen, die haben wir nämlich festgeschrieben)
+
+die hashes waren nicht gleich der beiden ascons. daher haben wir zuerst den python hash verifiziert. dieser hat einen korrekten hash produziert bei den message bytes 0x0000000000 -> dann hat sich aber rausgestellt dass das die falsche ASCON version war, wir haben nämlich von daniel eine andere python testdatei bekommen die uns andere hashes ausgegeben hat, damit haben wir auf python seite nun den korrekten hash
+
+daraufhin wollten wir testen warum der system verilog hash nicht korrekt ist. wir haben zuerst gemerkt, dass die werte nicht in der richtigen rheinfolge bearbeitet werden. das konnten wir fixen indem wir den output_payload_index immer auf 0 setzen nach jedem ssel_active und im initial block, damit erhalten wir (die umgekehrte) korrekte reinfolge. der hash war aber immer noch nicht korrekt. wir haben zunächst für das testen der reinfolge wieder einen hardgecodeten dummywert genutzt

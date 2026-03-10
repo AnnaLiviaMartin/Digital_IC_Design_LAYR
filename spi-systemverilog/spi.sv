@@ -126,7 +126,11 @@ always @(posedge clk) byte_received <= SSEL_active && SCK_risingedge && (bitcnt=
 
 initial begin
   LEDS <= 8'b00000000;
+
   response_byte <= 8'h00;
+  output_payload_index <= 8'b0;
+  input_payload_index <= 8'b0;
+
   ascon_msg_start <= 1'b0;
   ascon_msg_last <= 1'b0;
   ascon_rst_n <= 1'b0;
@@ -142,6 +146,8 @@ always_ff @(posedge clk) begin
 
     sent_payload <= 1'b0;
     received_payload <= 1'b0;
+    output_payload_index <= 8'b0;
+    input_payload_index <= 8'b0;
   end
   else
     state <= next_state;
@@ -173,7 +179,8 @@ always_ff @(posedge clk) begin
     //ascon_msg_start <= 1'b1;
     //ascon_msg_last <= 1'b1;
     //resetted_ascon <= 1'b0;
-    ascon_msg_in <= 64'hFFFFFFFFFFFFFFFF;
+    //ascon_msg_in <= 64'hFFFFFFFFFFFFFFFF;
+    ascon_msg_in <= 64'h0;
     
     if (!ascon_msg_last && !ascon_msg_start) begin
       ascon_msg_start <= 1'b1;
@@ -192,7 +199,9 @@ always_ff @(posedge clk) begin
   if (ascon_hash_ready) begin
     ascon_msg_last <= 1'b0;
     nonce <= ascon_hash_out;
-    output_payload <= ascon_hash_out;
+    //output_payload <= ascon_hash_out;
+    //output_payload <= 256'h6996494a25f60e42347a54d27b058fd4ca81b7dec13bbad36a4660fe02867fdc;
+    output_payload <= 256'hFFFFFFFFFFFFFFFF000000000000000011111111111111112222222222222222;
     response_ready <= 1'b1;
     is_sending_payload <= 1'b1;
     LEDS[6] <= 1;
@@ -209,12 +218,14 @@ always_ff @(posedge clk) begin
 
         is_resetting_ascon <= 1'b1;
 
-        /*response_ready <= 1'b1;
-        //output_payload <= 256'h112233445566778899AABBCCDDEEFF_0102030405060708090A0B0C0D0E0F_1A1B;
+        /*
+        response_ready <= 1'b1;
+        random_number_output <= 256'h6996494a25f60e42347a54d27b058fd4ca81b7dec13bbad36a4660fe02867fdc;
         nonce <= random_number_output;
         output_payload <= random_number_output;
         is_sending_payload <= 1'b1;
         */
+        
         LEDS[0] <= 1;
       end
       CHALLENGE: begin
